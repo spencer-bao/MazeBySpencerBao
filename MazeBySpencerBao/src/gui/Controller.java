@@ -2,6 +2,8 @@ package gui;
 
 import gui.Constants.UserInput;
 
+import java.util.Random;
+
 import generation.CardinalDirection;
 import generation.Maze;
 import generation.Order;
@@ -156,6 +158,8 @@ public class Controller {
 			System.exit(0) ;
         	// TODO: implement code that makes sure we generate different random mazes
         	// HINT: check http://download.oracle.com/javase/6/docs/api/java/util/Random.html
+			Random random = new Random();
+			seed = random.nextInt();
         }
         currentState.setSeed(seed);
         currentState.start(this, panel);

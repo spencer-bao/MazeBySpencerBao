@@ -40,4 +40,15 @@ class MazeFactoryTest {
 		fail("Not yet implemented");
 	}
 	
+	/**
+	 * Test case: check if maze has any rooms or loops
+	 * <p>
+	 * Method: order.isPerfect()
+	 * <p>
+	 * Correct behavior: return true
+	 */
+	@Test
+	void testNoRoomsOrLoops() {
+		fail("Not yet implemented");
+	}
 }

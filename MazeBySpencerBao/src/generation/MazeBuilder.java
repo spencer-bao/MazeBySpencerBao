@@ -224,19 +224,19 @@ public class MazeBuilder implements Runnable {
 		
 		CardinalDirection[][] origcds = new CardinalDirection[width][height]; 
 		CardinalDirection cd = CardinalDirection.East;
-		CardinalDirection origcd = cd;
+		CardinalDirection origcd = cd; //east = (1,0) south = (0,1) west = (-1,0) north = (0,-1)
 		
 		floorplan.setCellAsVisited(x, y); 
 		Wallboard wallboard = new Wallboard(x, y, cd);
 		while (true) { 
 			wallboard.setLocationDirection(x, y, cd);
-			if (!floorplan.canTearDown(wallboard)) {
-				cd = cd.rotateClockwise();
-				if (origcd == cd) {				
-					if (x == firstx && y == firsty)
+			if (!floorplan.canTearDown(wallboard)) { //if load bearing wall
+				cd = cd.rotateClockwise(); // turn clockwise
+				if (origcd == cd) { // if cd rotated all the way around			
+					if (x == firstx && y == firsty) // if stuck in the beginning, break
 						break; 			
-					int[] dxy = origcds[x][y].getDirection();
-					x -= dxy[0];
+					int[] dxy = origcds[x][y].getDirection(); 
+					x -= dxy[0]; // move back to previous cell
 					y -= dxy[1];
 					if (null == origcds[x][y]) {
 						// Happens at starting position
@@ -245,16 +245,17 @@ public class MazeBuilder implements Runnable {
 					}
 					else
 						cd = origcds[x][y] ;
-					cd = cd.rotateClockwise();
-					origcd = cd;
+					
+					cd = cd.rotateClockwise(); // start in the previous cell and look at the next cell
+					origcd = cd;				// from different direction
 				}
 			} else {
-				floorplan.deleteWallboard(wallboard);
+				floorplan.deleteWallboard(wallboard); 
 				int[] dxy = cd.getDirection();
-				x += dxy[0];
+				x += dxy[0]; // move forward in the direction
 				y += dxy[1];
 				floorplan.setCellAsVisited(x, y);
-				origcds[x][y] = cd;
+				origcds[x][y] = cd; // store direction in the array
 				cd = cd.randomDirection();
 				origcd = cd;
 			}

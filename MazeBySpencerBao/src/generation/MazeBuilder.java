@@ -230,7 +230,7 @@ public class MazeBuilder implements Runnable {
 		Wallboard wallboard = new Wallboard(x, y, cd);
 		while (true) { 
 			wallboard.setLocationDirection(x, y, cd);
-			if (!floorplan.canTearDown(wallboard)) { //if load bearing wall
+			if (!floorplan.canTearDown(wallboard)) { //if not load bearing wall
 				cd = cd.rotateClockwise(); // turn clockwise
 				if (origcd == cd) { // if cd rotated all the way around			
 					if (x == firstx && y == firsty) // if stuck in the beginning, break

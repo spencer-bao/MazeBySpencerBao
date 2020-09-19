@@ -51,4 +51,16 @@ class MazeFactoryTest {
 	void testNoRoomsOrLoops() {
 		fail("Not yet implemented");
 	}
+	
+	/**
+	 * Test case: check if maze only has one exit
+	 * <p>
+	 * Method: wallboard.getNeighborX() wallboard.getNeighborY()
+	 * <p>
+	 * Correct behavior: should return only one false when checking all wallboards.
+	 */
+	@Test
+	void testOneExit() {
+		fail("Not yet implemented");
+	}
 }

@@ -43,13 +43,8 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 //					System.out.println(floorplan.hasWall(x, y, cd));
 					set[y][x+1] = set[y][x]; // merged cells belong to same set
 				}
-				dict.put(set[y][x], true);
-//				System.out.println(dict.toString());
-//				floorplan.setCellAsVisited(x, y);
-				
-//				System.out.println(wallboard.getX());
 				x++;
-//				System.out.println(Arrays.toString(set));
+
 				}
 
 			y++; // to next row
@@ -72,7 +67,6 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 							set_counter++;
 						}	
 					}
-//					System.out.println(set[y][x]);
 					x++;
 				}
 			}	

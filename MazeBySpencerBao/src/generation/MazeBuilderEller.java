@@ -60,8 +60,8 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 				x = 0;
 				for (int j = 0; j < width; j++) {
 					wallboard.setLocationDirection(x, y, cd);
-//					if (set[y][x] != set[y-1][x]) { //if the set above does not have a vertical merge yet
-					if (dict.get(set[y-1][x]) == true) {
+					if (set[y][x] != set[y-1][x]) { //if the set above does not have a vertical merge yet
+//					if (dict.get(set[y-1][x]) != null) {
 						if (random.nextInt(2) == 0) {
 							floorplan.deleteWallboard(wallboard);
 //							System.out.println(floorplan.hasWall(x, y, cd));

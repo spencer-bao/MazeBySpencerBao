@@ -2,7 +2,10 @@ package generation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
+
+import generation.Order.Builder;
 
 class MazeFactoryTest {
 
@@ -16,6 +19,21 @@ class MazeFactoryTest {
 		Exit can be reached from anywhere in the maze
 	*/
 	
+	
+	MazeFactory factory = new MazeFactory();
+	StubOrder DFSorder = new StubOrder();
+	
+	@Before
+	public void setUp() {
+//		DFSorder = new StubOrder();
+		DFSorder.builder = Builder.DFS;
+		DFSorder.skillLevel = 2;
+		DFSorder.isPerfect = true;
+		factory.order(DFSorder);
+		factory.waitTillDelivered();
+	}
+	
+	
 	/**
 	 * Test case: check if all cells have 3 walls or less.
 	 * <p>
@@ -25,8 +43,22 @@ class MazeFactoryTest {
 	 */
 	@Test
 	void testForFourWalls() {
-		fail("Not yet implemented");
+		Maze maze = DFSorder.getMaze();
+		Floorplan floorplan = new Floorplan(maze.getWidth(), maze.getHeight());
+		floorplan = maze.getFloorplan();
+		for (int y = 0; y < maze.getHeight(); y++) {
+			for (int x = 0; x < maze.getWidth(); x++) {
+				assertFalse(floorplan.hasWall(x, y, CardinalDirection.East) == true &&
+							floorplan.hasWall(x, y, CardinalDirection.West) == true &&
+							floorplan.hasWall(x, y, CardinalDirection.North) == true &&
+							floorplan.hasWall(x, y, CardinalDirection.South) == true);
+					
+			}
+		}
 	}
+		
+		
+	
 	
 	/**
 	 * Test case: exit can be reached from anywhere in the maze.

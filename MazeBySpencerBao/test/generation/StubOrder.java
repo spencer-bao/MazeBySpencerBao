@@ -12,7 +12,11 @@ public class StubOrder implements Order{
 	public int getSkillLevel() {
 		return skillLevel;
 	}
-
+	
+	public void setBuilder(Builder builder) {
+		this.builder = builder;
+	}
+	
 	@Override
 	public Builder getBuilder() {
 		return builder;
@@ -28,13 +32,13 @@ public class StubOrder implements Order{
 		return seed;
 	}
 
-	public Maze getMaze(Maze mazeConfig) {
-		return mazeConfig;
+	public Maze getMaze() {
+		return maze;
 	}
 	
 	@Override
 	public void deliver(Maze mazeConfig) {
-		getMaze(mazeConfig);
+		this.maze = mazeConfig;
 	}
 
 	@Override

@@ -330,7 +330,7 @@ public class Distance {
 			for (int x = 0; x != width; x++) {
 				for (int y = 0; y != height; y++) 
 				{
-					System.out.println(dists[x][y]);
+//					System.out.println(dists[x][y]);
 					if (dists[x][y] == INFINITY) {
 						continue;
 					}

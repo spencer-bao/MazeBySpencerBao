@@ -30,7 +30,6 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 		int y = 0;
 		
 		CardinalDirection cd = CardinalDirection.East;
-//		floorplan.setCellAsVisited(x, y); 
 		Wallboard wallboard = new Wallboard(x, y, cd);
 		Dictionary<Integer, Boolean> dict = new Hashtable();
 		
@@ -40,14 +39,13 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 				wallboard.setLocationDirection(x, y, cd);
 				if (random.nextInt(2) == 0) { // randomly delete wallboards
 					floorplan.deleteWallboard(wallboard);
-//					System.out.println(floorplan.hasWall(x, y, cd));
 					set[y][x+1] = set[y][x]; // merged cells belong to same set
 				}
+				dict.put(set[y][x], true);
 				x++;
-
 				}
-
 			y++; // to next row
+			
 		// random vertical connections, at least 1 per set, assign them to the set they connect to
 		// flesh out next row, assigning remaining cells to its own set
 			cd = CardinalDirection.North;
@@ -56,10 +54,8 @@ public class MazeBuilderEller extends MazeBuilder implements Runnable{
 				for (int j = 0; j < width; j++) {
 					wallboard.setLocationDirection(x, y, cd);
 					if (set[y][x] != set[y-1][x]) { //if the set above does not have a vertical merge yet
-//					if (dict.get(set[y-1][x]) != null) {
 						if (random.nextInt(2) == 0) {
 							floorplan.deleteWallboard(wallboard);
-//							System.out.println(floorplan.hasWall(x, y, cd));
 							set[y][x] = set[y-1][x];
 							dict.remove(set[y-1][x]);
 						} else {

@@ -8,11 +8,14 @@ class ReliableSensor implements DistanceSensor{
 	
 	Controller controller = new Controller();
 	Maze maze = controller.getMazeConfiguration();
-
+	Direction currentDirection;
+	public static final int SENSE_ENERGY = 1;
 	@Override
 	public int distanceToObstacle(int[] currentPosition, CardinalDirection currentDirection, float[] powersupply)
 			throws Exception {
-		
+		if (powersupply[0] < SENSE_ENERGY) {
+			throw new Exception("Not enough energy to use sensor.");
+		}
 		int[] position = currentPosition;
 		CardinalDirection direction = currentDirection;
 		int dx;
@@ -44,26 +47,24 @@ class ReliableSensor implements DistanceSensor{
 
 	@Override
 	public void setSensorDirection(Direction mountedDirection) {
-		// TODO Auto-generated method stub
-		
+		currentDirection = mountedDirection;
 	}
 
 	@Override
 	public float getEnergyConsumptionForSensing() {
-		// TODO Auto-generated method stub
-		return 0;
+		return SENSE_ENERGY;
 	}
 
 	@Override
 	public void startFailureAndRepairProcess(int meanTimeBetweenFailures, int meanTimeToRepair)
 			throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Did not implement.");
 		
 	}
 
 	@Override
 	public void stopFailureAndRepairProcess() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Did not implement.");
 		
 	}
 

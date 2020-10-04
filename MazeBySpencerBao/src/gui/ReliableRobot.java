@@ -13,9 +13,14 @@ import gui.Constants.UserInput;
  * 
  */
 public class ReliableRobot implements Robot{
-
+	
+	public static final int BATTERY_LEVEL = 3500;
+	public static final int STEP_ENERGY = 6;
+	public static final int ROTATE_ENERGY = 3;
+	public static final int JUMP_ENERGY = 6;
+	
 	Controller controller;
-	float[] batteryLevel = {3500};
+	float[] batteryLevel = {BATTERY_LEVEL};
 	int odometer = 0;
 	ReliableSensor sensor;
 	
@@ -39,12 +44,11 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public int[] getCurrentPosition() throws Exception {
-		Exception e = new Exception();
 		int[] currentPosition = controller.getCurrentPosition();
 		if (currentPosition[0] >= controller.panel.getWidth()) {
-			throw e;
+			throw new Exception("Current x position is outside maze.");
 		} else if (currentPosition[1] >= controller.panel.getHeight()) {
-			throw e;
+			throw new Exception("Current y position is outside maze.");
 		} else {
 			return currentPosition;
 		}
@@ -67,12 +71,12 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public float getEnergyForFullRotation() {
-		return 12;
+		return ROTATE_ENERGY * 4;
 	}
 
 	@Override
 	public float getEnergyForStepForward() {
-		return 6;
+		return STEP_ENERGY;
 	}
 
 	@Override
@@ -87,8 +91,8 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public void rotate(Turn turn) {
-		float turnEnergy = getEnergyForFullRotation()/4;
-		if (turnEnergy <= batteryLevel[0] && hasStopped() == false) {
+
+		if (ROTATE_ENERGY <= batteryLevel[0] && hasStopped() == false) {
 			switch (turn) {
 				case LEFT:
 					controller.keyDown(UserInput.Left, 1);
@@ -96,14 +100,14 @@ public class ReliableRobot implements Robot{
 					controller.keyDown(UserInput.Right, 1);
 				case AROUND:
 					controller.keyDown(UserInput.Right, 1);
-					batteryLevel[0] -= turnEnergy;
-					if (turnEnergy <= batteryLevel[0]) {
+					batteryLevel[0] -= ROTATE_ENERGY;
+					if (ROTATE_ENERGY <= batteryLevel[0]) {
 						controller.keyDown(UserInput.Right, 1);
 					} else {
 						batteryLevel[0] = 0;
 					}
 			}
-			batteryLevel[0] -= turnEnergy;
+			batteryLevel[0] -= ROTATE_ENERGY;
 		} else {
 			batteryLevel[0] = 0;
 		}
@@ -114,7 +118,7 @@ public class ReliableRobot implements Robot{
 		for (int i = 0; i < distance; i++) {
 			if (getEnergyForStepForward() <= batteryLevel[0] && hasStopped() == false) {
 				controller.keyDown(UserInput.Up, 1);
-				batteryLevel[0] -= getEnergyForStepForward();
+				batteryLevel[0] -= STEP_ENERGY;
 			} else {
 				batteryLevel[0] = 0;
 				break;
@@ -126,7 +130,7 @@ public class ReliableRobot implements Robot{
 	public void jump() {
 		if (40 <= batteryLevel[0] && hasStopped() == false) {
 			controller.keyDown(UserInput.Jump, 1);
-			batteryLevel[0] -= 40;
+			batteryLevel[0] -= JUMP_ENERGY;
 		} else {
 			batteryLevel[0] = 0;
 		}
@@ -206,7 +210,7 @@ public class ReliableRobot implements Robot{
 		} catch (Exception e) {
 			System.out.println("distanceToObstacle(): error getting current position.");
 			e.printStackTrace();
-		}
+		} 
 		return 0;
 	}
 

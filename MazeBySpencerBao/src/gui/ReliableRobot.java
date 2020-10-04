@@ -15,8 +15,9 @@ import gui.Constants.UserInput;
 public class ReliableRobot implements Robot{
 
 	Controller controller;
-	float batteryLevel = 3500;
+	float[] batteryLevel = {3500};
 	int odometer = 0;
+	ReliableSensor sensor;
 	
 	@Override
 	public void setController(Controller controller){
@@ -56,12 +57,12 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public float getBatteryLevel() {
-		return batteryLevel;
+		return batteryLevel[0];
 	}
 
 	@Override
 	public void setBatteryLevel(float level) {
-		batteryLevel = level;
+		batteryLevel[0] = level;
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public class ReliableRobot implements Robot{
 	@Override
 	public void rotate(Turn turn) {
 		float turnEnergy = getEnergyForFullRotation()/4;
-		if (turnEnergy <= batteryLevel && hasStopped() == false) {
+		if (turnEnergy <= batteryLevel[0] && hasStopped() == false) {
 			switch (turn) {
 				case LEFT:
 					controller.keyDown(UserInput.Left, 1);
@@ -95,27 +96,27 @@ public class ReliableRobot implements Robot{
 					controller.keyDown(UserInput.Right, 1);
 				case AROUND:
 					controller.keyDown(UserInput.Right, 1);
-					batteryLevel -= turnEnergy;
-					if (turnEnergy <= batteryLevel) {
+					batteryLevel[0] -= turnEnergy;
+					if (turnEnergy <= batteryLevel[0]) {
 						controller.keyDown(UserInput.Right, 1);
 					} else {
-						batteryLevel = 0;
+						batteryLevel[0] = 0;
 					}
 			}
-			batteryLevel -= turnEnergy;
+			batteryLevel[0] -= turnEnergy;
 		} else {
-			batteryLevel = 0;
+			batteryLevel[0] = 0;
 		}
 	}
 
 	@Override
 	public void move(int distance) {
 		for (int i = 0; i < distance; i++) {
-			if (getEnergyForStepForward() <= batteryLevel && hasStopped() == false) {
+			if (getEnergyForStepForward() <= batteryLevel[0] && hasStopped() == false) {
 				controller.keyDown(UserInput.Up, 1);
-				batteryLevel -= getEnergyForStepForward();
+				batteryLevel[0] -= getEnergyForStepForward();
 			} else {
-				batteryLevel = 0;
+				batteryLevel[0] = 0;
 				break;
 			}
 		}
@@ -123,11 +124,11 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public void jump() {
-		if (40 <= batteryLevel && hasStopped() == false) {
+		if (40 <= batteryLevel[0] && hasStopped() == false) {
 			controller.keyDown(UserInput.Jump, 1);
-			batteryLevel -= 40;
+			batteryLevel[0] -= 40;
 		} else {
-			batteryLevel = 0;
+			batteryLevel[0] = 0;
 		}
 	}
 
@@ -185,32 +186,23 @@ public class ReliableRobot implements Robot{
 	@Override
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
 		
+		CardinalDirection currentDirection = getCurrentDirection();
+		switch (direction){
+
+			case BACKWARD:
+				currentDirection = currentDirection.oppositeDirection();
+			case LEFT:
+				currentDirection = currentDirection.oppositeDirection();
+				currentDirection = currentDirection.rotateClockwise();
+			case RIGHT:
+				currentDirection = currentDirection.rotateClockwise();
+			case FORWARD:
+			default:
+			break;
+		}
+		
 		try {
-			int[] currentPosition = getCurrentPosition();
-			CardinalDirection currentDirection = getCurrentDirection();
-			int dx;
-			int dy;
-			int distance = 0;
-			
-			switch(direction){		
-				case BACKWARD:
-					currentDirection.oppositeDirection();	
-				case RIGHT:
-					currentDirection.rotateClockwise();
-				case LEFT:
-					currentDirection.oppositeDirection();
-					currentDirection.rotateClockwise();
-				case FORWARD:
-			}
-			dx = currentDirection.getDirection()[0];
-			dy = currentDirection.getDirection()[1];
-			while (controller.getMazeConfiguration().getFloorplan().
-					hasNoWall(currentPosition[0], currentPosition[1], currentDirection)){
-				distance += 1;
-				currentPosition[0] += dx;
-				currentPosition[1] += dy;
-			}
-			return distance;	
+			return sensor.distanceToObstacle(getCurrentPosition(), currentDirection, batteryLevel);
 		} catch (Exception e) {
 			System.out.println("distanceToObstacle(): error getting current position.");
 			e.printStackTrace();
@@ -220,7 +212,7 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public boolean canSeeThroughTheExitIntoEternity(Direction direction) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

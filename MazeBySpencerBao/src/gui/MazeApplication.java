@@ -75,9 +75,19 @@ public class MazeApplication extends JFrame {
 	    }
 	    else if ("Eller".equalsIgnoreCase(parameter))
 	    {
-	    	// TODO: for P2 assignment, please add code to set the builder accordingly
 	    	msg = "MazeApplication: generating random maze with Eller's algorithm.";
 	        result.setBuilder(Order.Builder.Eller);
+	    }
+	    else if ("Wizard".equalsIgnoreCase(parameter))
+	    {
+	    	msg = "MazeApplication: solving random maze with Wizard.";
+	    	ReliableRobot rob = new ReliableRobot();
+	    	Wizard wiz = new Wizard();
+//	    	result.setRobotAndDriver(rob, wiz);
+	    	rob.setController(result);
+	    	wiz.setMaze(result.getMazeConfiguration());
+	    	wiz.setRobot(rob);
+	        result.setRobotAndDriver(rob, wiz);
 	    }
 	    // Case 4: a file
 	    else {

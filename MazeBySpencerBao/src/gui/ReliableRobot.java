@@ -22,7 +22,9 @@ public class ReliableRobot implements Robot{
 	Controller controller;
 	float[] batteryLevel = {BATTERY_LEVEL};
 	int odometer = 0;
+	
 	ReliableSensor sensor;
+
 	
 	@Override
 	public void setController(Controller controller){
@@ -93,6 +95,7 @@ public class ReliableRobot implements Robot{
 	public void rotate(Turn turn) {
 
 		if (ROTATE_ENERGY <= batteryLevel[0] && hasStopped() == false) {
+			System.out.printf("Before rotate: ", getCurrentDirection());
 			switch (turn) {
 				case LEFT:
 					controller.keyDown(UserInput.Left, 1);
@@ -107,6 +110,7 @@ public class ReliableRobot implements Robot{
 						batteryLevel[0] = 0;
 					}
 			}
+			System.out.printf("After rotate: ", getCurrentDirection());
 			batteryLevel[0] -= ROTATE_ENERGY;
 		} else {
 			batteryLevel[0] = 0;

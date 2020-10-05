@@ -10,6 +10,7 @@ class ReliableSensor implements DistanceSensor{
 	Maze maze = controller.getMazeConfiguration();
 	Direction currentDirection;
 	public static final int SENSE_ENERGY = 1;
+	
 	@Override
 	public int distanceToObstacle(int[] currentPosition, CardinalDirection currentDirection, float[] powersupply)
 			throws Exception {

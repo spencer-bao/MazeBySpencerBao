@@ -201,7 +201,8 @@ public class MazeBuilder implements Runnable {
 		final int[] remote = dists.computeDistances(floorplan) ;
 
 		// identify cell with the greatest distance
-		final int[] pos = dists.getStartPosition();
+//		final int[] pos = dists.getStartPosition();
+		final int[] pos = {0,0}; // sanity test for P3;
 		startx = pos[0] ;
 		starty = pos[1] ;
 

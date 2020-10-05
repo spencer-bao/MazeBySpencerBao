@@ -85,9 +85,9 @@ public class StatePlaying extends DefaultState {
         //
         // adjust internal state of maze model
         // visibility settings
-        showMaze = false ;
+        showMaze = true ;
         showSolution = false ;
-        mapMode = false;
+        mapMode = true;
         // init data structure for visible walls
         seenCells = new Floorplan(mazeConfig.getWidth()+1,mazeConfig.getHeight()+1) ;
         // set the current position and direction consistently with the viewing direction
@@ -156,6 +156,7 @@ public class StatePlaying extends DefaultState {
         // react to input for displaying a map of the current path or of the overall maze (on/off toggle switch)
         // react to input to display solution (on/off toggle switch)
         // react to input to increase/reduce map scale
+//        System.out.println("Position: " + px + " "+ py + " Direction: " + CardinalDirection.getDirection(dx, dy)); // sanity test for P3
         switch (key) {
         case Start: // misplaced, do nothing
             break;

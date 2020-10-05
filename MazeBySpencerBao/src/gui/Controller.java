@@ -184,6 +184,16 @@ public class Controller {
         currentState = states[2];
         currentState.setMazeConfiguration(config);
         currentState.start(this, panel);
+        if (getDriver() != null) {
+        	try {
+        		robot.setController(this);
+        		driver.setRobot(robot);
+        		driver.setMaze(config);
+        		driver.drive2Exit();
+        	} catch (Exception e) {
+        		System.out.println("switchFromGeneratingToPlaying(): robotDriver has stopped");
+        	}
+        }
     }
     /**
      * Switches the controller to the final screen
@@ -222,11 +232,11 @@ public class Controller {
     /**
      * The robot that interacts with the controller starting from P3
      */
-    Robot robot;
+    Robot robot = null;
     /**
      * The driver that interacts with the robot starting from P3
      */
-    RobotDriver driver;
+    RobotDriver driver = null;
     
     /**
      * Sets the robot and robot driver

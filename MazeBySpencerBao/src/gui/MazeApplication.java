@@ -83,11 +83,11 @@ public class MazeApplication extends JFrame {
 	    	msg = "MazeApplication: solving random maze with Wizard.";
 	    	ReliableRobot rob = new ReliableRobot();
 	    	Wizard wiz = new Wizard();
-//	    	result.setRobotAndDriver(rob, wiz);
-	    	rob.setController(result);
-	    	wiz.setMaze(result.getMazeConfiguration());
-	    	wiz.setRobot(rob);
-	        result.setRobotAndDriver(rob, wiz);
+	    	result.setRobotAndDriver(rob, wiz);
+//	    	rob.setController(result);
+//	    	wiz.setMaze(result.getMazeConfiguration());
+//	    	wiz.setRobot(rob);
+//	        result.setRobotAndDriver(rob, wiz);
 	    }
 	    // Case 4: a file
 	    else {

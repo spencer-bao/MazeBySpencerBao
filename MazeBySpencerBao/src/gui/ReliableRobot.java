@@ -24,23 +24,24 @@ public class ReliableRobot implements Robot{
 	int odometer = 0;
 	
 	ReliableSensor sensor;
-
+	
+	private boolean hasStopped = false;
 	
 	@Override
 	public void setController(Controller controller){
-		IllegalArgumentException e = new IllegalArgumentException();
-		
-		if (controller == null) {
-			
-			System.out.println("ReliableRobot's controller is null.");
-			throw e;
-			
-		} else if (controller.currentState != controller.states[2]){
-			System.out.println("ReliableRobot's controller is not in the playing state.");
-			throw e;
-		} else {
+//		IllegalArgumentException e = new IllegalArgumentException();
+//		
+//		if (controller == null) {
+//			
+//			System.out.println("ReliableRobot's controller is null.");
+//			throw e;
+//			
+//		} else if (controller.currentState != controller.states[2]){
+//			System.out.println("ReliableRobot's controller is not in the playing state.");
+//			throw e;
+//		} else {
 			this.controller = controller;
-		}
+//		}
 		
 	}
 
@@ -95,7 +96,7 @@ public class ReliableRobot implements Robot{
 	public void rotate(Turn turn) {
 
 		if (ROTATE_ENERGY <= batteryLevel[0] && hasStopped() == false) {
-			System.out.printf("Before rotate: ", getCurrentDirection());
+//			System.out.println("Before rotate: " + getCurrentDirection().name());
 			switch (turn) {
 				case LEFT:
 					controller.keyDown(UserInput.Left, 1);
@@ -110,7 +111,7 @@ public class ReliableRobot implements Robot{
 						batteryLevel[0] = 0;
 					}
 			}
-			System.out.printf("After rotate: ", getCurrentDirection());
+//			System.out.println("After rotate: " + getCurrentDirection().name());
 			batteryLevel[0] -= ROTATE_ENERGY;
 		} else {
 			batteryLevel[0] = 0;
@@ -119,14 +120,25 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public void move(int distance) {
-		for (int i = 0; i < distance; i++) {
-			if (getEnergyForStepForward() <= batteryLevel[0] && hasStopped() == false) {
-				controller.keyDown(UserInput.Up, 1);
-				batteryLevel[0] -= STEP_ENERGY;
-			} else {
-				batteryLevel[0] = 0;
-				break;
-			}
+//		int dx = getCurrentDirection().getDirection()[0];
+//		int dy = getCurrentDirection().getDirection()[1];
+		try {
+			for (int i = 0; i < distance; i++) {
+				if (getEnergyForStepForward() <= batteryLevel[0] && hasStopped() == false) {
+					if (controller.getMazeConfiguration().getFloorplan().hasWall(getCurrentPosition()[0], 
+							getCurrentPosition()[1], getCurrentDirection())) {
+						hasStopped = true;
+						break;
+					}
+					controller.keyDown(UserInput.Up, 1);
+					batteryLevel[0] -= STEP_ENERGY;
+				} else {
+					batteryLevel[0] = 0;
+					break;
+				}
+			} 
+		}catch (Exception e) {
+				System.out.println("move(): position out of maze.");
 		}
 	}
 
@@ -172,23 +184,16 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public boolean hasStopped() {
-		int[] current_position;
-		
-		try {
-			current_position = getCurrentPosition();
-			if (getOdometerReading() <= 0) {
-				return true;
-			} else if (controller.getMazeConfiguration().getFloorplan().
-					hasWall(current_position[0], current_position[1], getCurrentDirection())) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			System.out.println("hasStopped(): error getting current position.");
-			e.printStackTrace();
+		if (getBatteryLevel() <= 0) {
+			return true;
+		} 
+		else if (hasStopped == true) {
+			return true;
+		} 
+		else {
+			return false;
 		}
-		return false;
+
 	}
 
 	@Override

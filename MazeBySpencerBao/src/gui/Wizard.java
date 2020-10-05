@@ -1,7 +1,8 @@
 package gui;
 
+import generation.CardinalDirection;
 import generation.Maze;
-import gui.Robot.Direction;
+import gui.Robot.Turn;
 
 public class Wizard implements RobotDriver{
 
@@ -22,6 +23,7 @@ public class Wizard implements RobotDriver{
 	public boolean drive2Exit() throws Exception {
 		int nextX;
 		int nextY;
+		CardinalDirection nextDirection;
 		boolean finished = false;
 		
 		while (!finished) {
@@ -35,13 +37,53 @@ public class Wizard implements RobotDriver{
 			nextX = maze.getNeighborCloserToExit(rob.getCurrentPosition()[0], rob.getCurrentPosition()[1])[0];
 			nextY = maze.getNeighborCloserToExit(rob.getCurrentPosition()[0], rob.getCurrentPosition()[1])[1];
 			
-			for (Direction d : Direction.values()) {
-				
+			nextDirection = CardinalDirection.getDirection(nextX - rob.getCurrentPosition()[0], nextY - rob.getCurrentPosition()[1]);
+			
+			switch (rob.getCurrentDirection()) {
+			case North:
+				switch (nextDirection) {
+				case East:
+					rob.rotate(Turn.RIGHT);
+				case West:
+					rob.rotate(Turn.LEFT);
+				case South:
+					rob.rotate(Turn.AROUND);
+				case North:
+				}
+			case South:
+				switch (nextDirection) {
+				case East:
+					rob.rotate(Turn.LEFT);
+				case West:
+					rob.rotate(Turn.RIGHT);
+				case North:
+					rob.rotate(Turn.AROUND);
+				case South:
+				}
+			case East:
+				switch (nextDirection) {
+				case South:
+					rob.rotate(Turn.RIGHT);
+				case North:
+					rob.rotate(Turn.LEFT);
+				case West:
+					rob.rotate(Turn.AROUND);
+				case East:
+				}
+			case West:
+				switch (nextDirection) {
+				case North:
+					rob.rotate(Turn.RIGHT);
+				case South:
+					rob.rotate(Turn.LEFT);
+				case East:
+					rob.rotate(Turn.AROUND);
+				case West:
+				}
 			}
 			
+			rob.move(1);
 		}
-		
-		
 		return false;
 	}
 

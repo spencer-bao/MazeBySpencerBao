@@ -86,7 +86,7 @@ public class StatePlaying extends DefaultState {
         // adjust internal state of maze model
         // visibility settings
         showMaze = true ;
-        showSolution = false ;
+        showSolution = true ;
         mapMode = true;
         // init data structure for visible walls
         seenCells = new Floorplan(mazeConfig.getWidth()+1,mazeConfig.getHeight()+1) ;

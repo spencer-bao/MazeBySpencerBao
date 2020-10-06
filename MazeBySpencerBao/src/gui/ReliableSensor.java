@@ -3,7 +3,14 @@ package gui;
 import generation.CardinalDirection;
 import generation.Maze;
 import gui.Robot.Direction;
-
+/**
+ * Responsibilities: Calculates the distance to obstacle from any direction.
+ * 
+ * Collaborators: Controller, Maze, Direction
+ * 
+ * @author Spencer Bao
+ *
+ */
 class ReliableSensor implements DistanceSensor{
 	
 	Controller controller = new Controller();

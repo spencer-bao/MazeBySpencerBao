@@ -108,12 +108,14 @@ public class ReliableRobot implements Robot{
 					if (ROTATE_ENERGY <= batteryLevel[0]) {
 						controller.keyDown(UserInput.Right, 1);
 					} else {
+						hasStopped = true;
 						batteryLevel[0] = 0;
 					}
 			}
 //			System.out.println("After rotate: " + getCurrentDirection().name());
 			batteryLevel[0] -= ROTATE_ENERGY;
 		} else {
+			hasStopped = true;
 			batteryLevel[0] = 0;
 		}
 	}
@@ -132,7 +134,9 @@ public class ReliableRobot implements Robot{
 					}
 					controller.keyDown(UserInput.Up, 1);
 					batteryLevel[0] -= STEP_ENERGY;
+					odometer += 1;
 				} else {
+					hasStopped = true;
 					batteryLevel[0] = 0;
 					break;
 				}
@@ -147,7 +151,9 @@ public class ReliableRobot implements Robot{
 		if (40 <= batteryLevel[0] && hasStopped() == false) {
 			controller.keyDown(UserInput.Jump, 1);
 			batteryLevel[0] -= JUMP_ENERGY;
+			odometer += 1;
 		} else {
+			hasStopped = true;
 			batteryLevel[0] = 0;
 		}
 	}
@@ -185,6 +191,7 @@ public class ReliableRobot implements Robot{
 	@Override
 	public boolean hasStopped() {
 		if (getBatteryLevel() <= 0) {
+			hasStopped = true;
 			return true;
 		} 
 		else if (hasStopped == true) {
@@ -201,7 +208,6 @@ public class ReliableRobot implements Robot{
 		
 		CardinalDirection currentDirection = getCurrentDirection();
 		switch (direction){
-
 			case BACKWARD:
 				currentDirection = currentDirection.oppositeDirection();
 			case LEFT:
@@ -210,9 +216,7 @@ public class ReliableRobot implements Robot{
 			case RIGHT:
 				currentDirection = currentDirection.rotateClockwise();
 			case FORWARD:
-			default:
-			break;
-		}
+		}	
 		
 		try {
 			return sensor.distanceToObstacle(getCurrentPosition(), currentDirection, batteryLevel);
@@ -232,13 +236,13 @@ public class ReliableRobot implements Robot{
 	@Override
 	public void startFailureAndRepairProcess(Direction direction, int meanTimeBetweenFailures, int meanTimeToRepair)
 			throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented.");
 		
 	}
 
 	@Override
 	public void stopFailureAndRepairProcess(Direction direction) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Not implemented.");
 		
 	}
 

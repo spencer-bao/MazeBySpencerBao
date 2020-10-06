@@ -57,7 +57,7 @@ public class StateWinning extends DefaultState {
     	}
         // otherwise show finish screen with winning message
         // draw content on panel
-        view.redrawFinish(panel);
+        view.redrawFinish(panel, control.driver.getPathLength(), control.driver.getEnergyConsumption());
         // update screen with panel content
         panel.update();
 

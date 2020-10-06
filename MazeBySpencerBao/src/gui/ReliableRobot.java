@@ -23,10 +23,12 @@ public class ReliableRobot implements Robot{
 	float[] batteryLevel = {BATTERY_LEVEL};
 	int odometer = 0;
 	
-	ReliableSensor sensor;
+	ReliableSensor sensor = new ReliableSensor();
 	
 	private boolean hasStopped = false;
 	
+//	public int[] currentPosition;
+
 	@Override
 	public void setController(Controller controller){
 //		IllegalArgumentException e = new IllegalArgumentException();
@@ -100,8 +102,10 @@ public class ReliableRobot implements Robot{
 			switch (turn) {
 				case LEFT:
 					controller.keyDown(UserInput.Left, 1);
+					break;
 				case RIGHT:
 					controller.keyDown(UserInput.Right, 1);
+					break;
 				case AROUND:
 					controller.keyDown(UserInput.Right, 1);
 					batteryLevel[0] -= ROTATE_ENERGY;
@@ -111,6 +115,7 @@ public class ReliableRobot implements Robot{
 						hasStopped = true;
 						batteryLevel[0] = 0;
 					}
+					break;
 			}
 //			System.out.println("After rotate: " + getCurrentDirection().name());
 			batteryLevel[0] -= ROTATE_ENERGY;
@@ -122,17 +127,16 @@ public class ReliableRobot implements Robot{
 
 	@Override
 	public void move(int distance) {
-//		int dx = getCurrentDirection().getDirection()[0];
-//		int dy = getCurrentDirection().getDirection()[1];
 		try {
 			for (int i = 0; i < distance; i++) {
 				if (getEnergyForStepForward() <= batteryLevel[0] && hasStopped() == false) {
 					if (controller.getMazeConfiguration().getFloorplan().hasWall(getCurrentPosition()[0], 
-							getCurrentPosition()[1], getCurrentDirection())) {
+							getCurrentPosition()[1], getCurrentDirection())) { // if there is a wall, stop
 						hasStopped = true;
 						break;
 					}
 					controller.keyDown(UserInput.Up, 1);
+//					currentPosition = controller.getCurrentPosition();
 					batteryLevel[0] -= STEP_ENERGY;
 					odometer += 1;
 				} else {
@@ -163,7 +167,8 @@ public class ReliableRobot implements Robot{
 		int[] current_position;
 		try {
 			current_position = getCurrentPosition();
-			if (controller.getMazeConfiguration().getDistanceToExit(current_position[0], current_position[1]) == 0) {
+			if (controller.getMazeConfiguration().getDistanceToExit(current_position[0], 
+					current_position[1]) == 1) {
 				return true;
 			} else {
 				return false;
@@ -206,20 +211,25 @@ public class ReliableRobot implements Robot{
 	@Override
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
 		
-		CardinalDirection currentDirection = getCurrentDirection();
+		CardinalDirection senseDirection = getCurrentDirection();
 		switch (direction){
 			case BACKWARD:
-				currentDirection = currentDirection.oppositeDirection();
+				senseDirection = senseDirection.oppositeDirection();
+				break;
 			case LEFT:
-				currentDirection = currentDirection.oppositeDirection();
-				currentDirection = currentDirection.rotateClockwise();
+				senseDirection = senseDirection.oppositeDirection();
+				senseDirection = senseDirection.rotateClockwise();
+				break;
 			case RIGHT:
-				currentDirection = currentDirection.rotateClockwise();
+				senseDirection = senseDirection.rotateClockwise();
+				break;
 			case FORWARD:
+				break;
 		}	
 		
 		try {
-			return sensor.distanceToObstacle(getCurrentPosition(), currentDirection, batteryLevel);
+			sensor.setMaze(controller.getMazeConfiguration());
+			return sensor.distanceToObstacle(getCurrentPosition(), senseDirection, batteryLevel);
 		} catch (Exception e) {
 			System.out.println("distanceToObstacle(): error getting current position.");
 			e.printStackTrace();

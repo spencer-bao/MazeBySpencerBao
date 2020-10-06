@@ -215,6 +215,7 @@ public class StatePlaying extends DefaultState {
             draw() ; 
             break ;
         } // end of internal switch statement for playing state
+//        System.out.println("Position: " + px + " "+ py + " Direction: " + CardinalDirection.getDirection(dx, dy)); // sanity test for P3
         return true;
     }
     /**

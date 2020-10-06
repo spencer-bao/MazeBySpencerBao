@@ -14,7 +14,7 @@ import gui.Robot.Direction;
 class ReliableSensor implements DistanceSensor{
 	
 	Controller controller = new Controller();
-	Maze maze = controller.getMazeConfiguration();
+	Maze maze;
 	Direction currentDirection;
 	public static final int SENSE_ENERGY = 1;
 	
@@ -33,9 +33,9 @@ class ReliableSensor implements DistanceSensor{
 		
 		dx = direction.getDirection()[0];
 		dy = direction.getDirection()[1];
-		while (controller.getMazeConfiguration().getFloorplan().
+		while (maze.getFloorplan().
 				hasNoWall(position[0], position[1], direction)){
-			if (controller.getMazeConfiguration().getFloorplan().
+			if (maze.getFloorplan().
 					isExitPosition(position[0], position[1])) {
 				return Integer.MAX_VALUE;
 			}

@@ -212,16 +212,20 @@ public class ReliableRobot implements Robot{
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
 		
 		CardinalDirection senseDirection = getCurrentDirection();
+		System.out.println("senseDirection: " + senseDirection.name());
 		switch (direction){
 			case BACKWARD:
 				senseDirection = senseDirection.oppositeDirection();
 				break;
 			case LEFT:
-				senseDirection = senseDirection.oppositeDirection();
+//				senseDirection = senseDirection.oppositeDirection();
 				senseDirection = senseDirection.rotateClockwise();
+//				System.out.println("senseDirection after: " + senseDirection.name());
 				break;
 			case RIGHT:
+				senseDirection = senseDirection.oppositeDirection();
 				senseDirection = senseDirection.rotateClockwise();
+//				System.out.println("senseDirection after: " + senseDirection.name());
 				break;
 			case FORWARD:
 				break;

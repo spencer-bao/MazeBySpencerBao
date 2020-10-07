@@ -57,6 +57,7 @@ public class Wizard implements RobotDriver{
 							break;
 						}
 						rob.move(1);
+						break;
 					}
 				}
 				return true;

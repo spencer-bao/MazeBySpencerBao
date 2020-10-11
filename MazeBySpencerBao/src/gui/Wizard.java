@@ -68,9 +68,7 @@ public class Wizard implements RobotDriver{
 			
 			nextDirection = CardinalDirection.getDirection(nextX - rob.getCurrentPosition()[0], 
 															nextY - rob.getCurrentPosition()[1]);
-			
-//			System.out.println("currDirection: " + rob.getCurrentDirection().name());
-//			System.out.println("nextDirection: " + nextDirection.name());
+
 			switch (rob.getCurrentDirection()) {
 			case North:
 				switch (nextDirection) {
@@ -87,14 +85,7 @@ public class Wizard implements RobotDriver{
 					break;
 				}
 				break;
-//				if (nextDirection.equals(CardinalDirection.West)){
-//					rob.rotate(Turn.RIGHT);
-//				} else if (nextDirection.equals(CardinalDirection.East)){
-//					rob.rotate(Turn.LEFT);
-//				} else if (nextDirection.equals(CardinalDirection.South)){
-//					rob.rotate(Turn.AROUND);
-//				}
-//				break;
+
 			case South:
 				switch (nextDirection) {
 				case West:
@@ -110,15 +101,7 @@ public class Wizard implements RobotDriver{
 					break;
 				}
 				break;
-				
-//				if (nextDirection.equals(CardinalDirection.West)){
-//					rob.rotate(Turn.LEFT);
-//				} else if (nextDirection.equals(CardinalDirection.East)){
-//					rob.rotate(Turn.RIGHT);
-//				} else if (nextDirection.equals(CardinalDirection.North)){
-//					rob.rotate(Turn.AROUND);
-//				}
-//				break;
+
 			case East:
 				switch (nextDirection) {
 				case North:
@@ -134,15 +117,7 @@ public class Wizard implements RobotDriver{
 					break;
 				}
 				break;
-				
-//				if (nextDirection.equals(CardinalDirection.North)){
-//					rob.rotate(Turn.RIGHT);
-//				} else if (nextDirection.equals(CardinalDirection.South)){
-//					rob.rotate(Turn.LEFT);
-//				} else if (nextDirection.equals(CardinalDirection.West)){
-//					rob.rotate(Turn.AROUND);
-//				}
-//				break;
+
 			case West:
 				switch (nextDirection) {
 				case South:
@@ -159,19 +134,11 @@ public class Wizard implements RobotDriver{
 				}
 				break;
 				
-//				if (nextDirection.equals(CardinalDirection.South)){
-//					rob.rotate(Turn.RIGHT);
-//					
-//				} else if (nextDirection.equals(CardinalDirection.North)){
-//					rob.rotate(Turn.LEFT);
-//				} else if (nextDirection.equals(CardinalDirection.East)){
-//					rob.rotate(Turn.AROUND);
-//				}
-//				break;
+
 			default:
 				break;
 			}
-//			System.out.println("Moving.");
+
 			rob.move(1);
 
 		}

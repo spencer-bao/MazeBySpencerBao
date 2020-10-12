@@ -84,10 +84,13 @@ public class MazeApplication extends JFrame {
 	    	ReliableRobot rob = new ReliableRobot();
 	    	Wizard wiz = new Wizard();
 	    	result.setRobotAndDriver(rob, wiz);
-//	    	rob.setController(result);
-//	    	wiz.setMaze(result.getMazeConfiguration());
-//	    	wiz.setRobot(rob);
-//	        result.setRobotAndDriver(rob, wiz);
+	    }
+	    else if ("WallFollower".equalsIgnoreCase(parameter))
+	    {
+	    	msg = "MazeApplication: solving random maze with MazeFollower.";
+	    	UnreliableRobot rob = new UnreliableRobot();
+	    	WallFollower wall_e = new WallFollower();
+	    	result.setRobotAndDriver(rob, wall_e);
 	    }
 	    // Case 4: a file
 	    else {

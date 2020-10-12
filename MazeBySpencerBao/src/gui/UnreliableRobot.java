@@ -8,8 +8,8 @@ package gui;
  */
 
 public class UnreliableRobot extends ReliableRobot{
-	public static final int MEAN_TIME_TO_REPAIR = 200;
-	public static final int MEAN_TIME_BTWN_FAILURES = 400;
+	public static final int MEAN_TIME_TO_REPAIR = 2000; // time in millisec
+	public static final int MEAN_TIME_BTWN_FAILURES = 4000; // time in millisec
 	
 	UnreliableSensor forwardSensor 	= new UnreliableSensor();
 	UnreliableSensor backwardSensor = new UnreliableSensor();

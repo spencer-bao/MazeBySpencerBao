@@ -133,8 +133,7 @@ public class Wizard implements RobotDriver{
 					break;
 				}
 				break;
-				
-
+		
 			default:
 				break;
 			}
@@ -154,14 +153,12 @@ public class Wizard implements RobotDriver{
 		if (rob.hasStopped()) {
 			throw new Exception("Not enough energy to drive to exit.");
 		}
-		
-		
+			
 		nextX = maze.getNeighborCloserToExit(rob.getCurrentPosition()[0], rob.getCurrentPosition()[1])[0];
 		nextY = maze.getNeighborCloserToExit(rob.getCurrentPosition()[0], rob.getCurrentPosition()[1])[1];
 		
 		nextDirection = CardinalDirection.getDirection(nextX - rob.getCurrentPosition()[0], 
 														nextY - rob.getCurrentPosition()[1]);
-		
 		switch (rob.getCurrentDirection()) {
 		case North:
 			switch (nextDirection) {

@@ -35,46 +35,49 @@ public class WallFollower implements RobotDriver{
 	@Override
 	public boolean drive2Exit() throws Exception {
 		boolean finished = false;
-		int[] currentPosition = rob.getCurrentPosition();
-		CardinalDirection currentDirection = rob.getCurrentDirection();
+		int[] currentPosition;
+		CardinalDirection currentDirection;
 		
-//		rob.startFailureAndRepairProcess(direction, meanTimeBetweenFailures, meanTimeToRepair);
+		rob.startFailureAndRepairProcess(Direction.LEFT, UnreliableRobot.MEAN_TIME_BTWN_FAILURES, UnreliableRobot.MEAN_TIME_TO_REPAIR);
 		while(!finished) {
-			if (rob.isAtExit()) {
-				for (Direction d : Direction.values()) {
-					if (rob.distanceToObstacle(d) == Integer.MAX_VALUE) {
-						switch (d) {
-						case BACKWARD:
-							rob.rotate(Turn.AROUND);
-							break;
-						case FORWARD:
-							break;
-						case LEFT:
-							rob.rotate(Turn.LEFT);
-							break;
-						case RIGHT:
-							rob.rotate(Turn.RIGHT);
-							break;
-						default:
+			System.out.println("operational: " + rob.leftSensor.operational);
+			while (rob.leftSensor.operational == true) {
+				currentPosition = rob.getCurrentPosition();
+				currentDirection = rob.getCurrentDirection();
+				if (rob.isAtExit()) {
+					for (Direction d : Direction.values()) {
+						if (rob.distanceToObstacle(d) == Integer.MAX_VALUE) {
+							switch (d) {
+							case BACKWARD:
+								rob.rotate(Turn.AROUND);
+								break;
+							case FORWARD:
+								break;
+							case LEFT:
+								rob.rotate(Turn.LEFT);
+								break;
+							case RIGHT:
+								rob.rotate(Turn.RIGHT);
+								break;
+							default:
+								break;
+							}
+							rob.move(1);
+							rob.stopFailureAndRepairProcess(Direction.LEFT);
 							break;
 						}
-						rob.move(1);
-//						rob.stopFailureAndRepairProcess(direction);
-						break;
 					}
+					return true;
+				} else if (!maze.hasWall(currentPosition[0], currentPosition[1], 
+						currentDirection.rotateClockwise())) {					
+					rob.rotate(Turn.LEFT);
+					rob.move(1);
+				} else if (!maze.hasWall(currentPosition[0], currentPosition[1], currentDirection)) {
+					rob.move(1);
+				} else {
+					rob.rotate(Turn.RIGHT);
 				}
-				return true;
-			} else if (!maze.hasWall(currentPosition[0], currentPosition[1], currentDirection.oppositeDirection().rotateClockwise())) {
-				
-				rob.rotate(Turn.LEFT);
-				rob.move(1);
-			} else if (!maze.hasWall(currentPosition[0], currentPosition[1], currentDirection)) {
-				rob.move(1);
-			} else {
-				rob.rotate(Turn.RIGHT);
 			}
-			
-			
 		}
 		return false;
 	}

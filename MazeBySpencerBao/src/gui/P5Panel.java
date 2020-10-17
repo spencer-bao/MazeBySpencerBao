@@ -196,5 +196,5 @@ public interface P5Panel {
      * @param hintKey the key of the hint to be set.
      * @param hintValue the value indicating preferences for the specified hint category.
      */
-    public void setRenderingHint(RenderingHints hintKey, RenderingHints hintValue);
+    public void setRenderingHint(java.awt.RenderingHints.Key hintKey, Object hintValue);
 }

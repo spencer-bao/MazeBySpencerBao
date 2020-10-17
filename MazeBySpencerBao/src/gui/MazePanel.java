@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.AWTError;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -47,7 +48,7 @@ public class MazePanel extends Panel implements P5Panel{
 	 * Warning: do not override getGraphics() or drawing might fail. 
 	 */
 	public void update() {
-		paint(getGraphics());
+		commit();
 	}
 	
 	/**
@@ -80,7 +81,7 @@ public class MazePanel extends Panel implements P5Panel{
 	 */
 	public Graphics getBufferGraphics() {
 		// if necessary instantiate and store a graphics object for later use
-		if (null == graphics) { 
+		if (!isOperational()) { // before P5: graphics == null
 			if (null == bufferImage) {
 				bufferImage = createImage(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
 				if (null == bufferImage)
@@ -109,32 +110,72 @@ public class MazePanel extends Panel implements P5Panel{
 
 	@Override
 	public void commit() {
-		// TODO Auto-generated method stub
+		paint(getGraphics());
 		
 	}
 
 	@Override
 	public boolean isOperational() {
-		// TODO Auto-generated method stub
-		return false;
+		if (graphics != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public void setColor(int rgb) {
-		// TODO Auto-generated method stub
-		
+		Color color = new Color(rgb);
+		graphics.setColor(color);		
 	}
 
 	@Override
 	public int getColor() {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return graphics.getColor().getRGB();
 	}
 
 	@Override
 	public int getWallColor(int distance, int cc, int extensionX) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		final int RGB_DEF = 20;
+	    final int RGB_DEF_GREEN = 60;
+	    
+		final int d = distance / 4;
+        
+		
+        // calculateRGBValue(distance) from Wall
+        final int part1 = distance & 7;
+        final int add = (extensionX != 0) ? 1 : 0;
+        final int rgbValue = ((part1 + 2 + add) * 70) / 8 + 80;
+        
+     // mod used to limit the number of colors to 6
+        
+        int rgb;
+        switch (((d >> 3) ^ cc) % 6) {
+        case 0:
+            rgb = new Color(rgbValue, RGB_DEF, RGB_DEF).getRGB();
+            break;
+        case 1:
+            rgb = new Color(RGB_DEF, RGB_DEF_GREEN, RGB_DEF).getRGB();
+            break;
+        case 2:
+            rgb = new Color(RGB_DEF, RGB_DEF, rgbValue).getRGB();
+            break;
+        case 3:
+            rgb = new Color(rgbValue, RGB_DEF_GREEN, RGB_DEF).getRGB();
+            break;
+        case 4:
+            rgb = new Color(RGB_DEF, RGB_DEF_GREEN, rgbValue).getRGB();
+            break;
+        case 5:
+            rgb = new Color(rgbValue, RGB_DEF, rgbValue).getRGB();
+            break;
+        default:
+            rgb = new Color(RGB_DEF, RGB_DEF, RGB_DEF).getRGB();
+            break;
+        }
+		return rgb;
 	}
 
 	@Override

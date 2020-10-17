@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import gui.MazeFileWriter;
+import gui.MazePanel;
 
 /**
  * A wall is a continuous sequence of wallboards in the maze.
@@ -74,6 +75,8 @@ public class Wall {
      * already by the user on its path through the maze.
      */
     private boolean seen;
+    
+    MazePanel panel;
 
     /**
      * Constructor assigns parameter values to instance variables.
@@ -146,33 +149,37 @@ public class Wall {
      *            obscure
      */
     private void initColor(final int distance, final int cc) {
-        final int d = distance / 4;
-        // mod used to limit the number of colors to 6
-        final int rgbValue = calculateRGBValue(d);
-        //System.out.println("Initcolor rgb: " + rgbValue);
-        switch (((d >> 3) ^ cc) % 6) {
-        case 0:
-            setColor(new Color(rgbValue, RGB_DEF, RGB_DEF));
-            break;
-        case 1:
-            setColor(new Color(RGB_DEF, RGB_DEF_GREEN, RGB_DEF));
-            break;
-        case 2:
-            setColor(new Color(RGB_DEF, RGB_DEF, rgbValue));
-            break;
-        case 3:
-            setColor(new Color(rgbValue, RGB_DEF_GREEN, RGB_DEF));
-            break;
-        case 4:
-            setColor(new Color(RGB_DEF, RGB_DEF_GREEN, rgbValue));
-            break;
-        case 5:
-            setColor(new Color(rgbValue, RGB_DEF, rgbValue));
-            break;
-        default:
-            setColor(new Color(RGB_DEF, RGB_DEF, RGB_DEF));
-            break;
-        }
+//        final int d = distance / 4;
+//        // mod used to limit the number of colors to 6
+//        final int rgbValue = calculateRGBValue(d);
+//        //System.out.println("Initcolor rgb: " + rgbValue);
+//        switch (((d >> 3) ^ cc) % 6) {
+//        case 0:
+//            setColor(new Color(rgbValue, RGB_DEF, RGB_DEF));
+//            break;
+//        case 1:
+//            setColor(new Color(RGB_DEF, RGB_DEF_GREEN, RGB_DEF));
+//            break;
+//        case 2:
+//            setColor(new Color(RGB_DEF, RGB_DEF, rgbValue));
+//            break;
+//        case 3:
+//            setColor(new Color(rgbValue, RGB_DEF_GREEN, RGB_DEF));
+//            break;
+//        case 4:
+//            setColor(new Color(RGB_DEF, RGB_DEF_GREEN, rgbValue));
+//            break;
+//        case 5:
+//            setColor(new Color(rgbValue, RGB_DEF, rgbValue));
+//            break;
+//        default:
+//            setColor(new Color(RGB_DEF, RGB_DEF, RGB_DEF));
+//            break;
+//        }
+    	
+    	//After P5:
+    	setColor(new Color(panel.getWallColor(distance, cc, getExtensionX())));
+    	
     }
 
     /**

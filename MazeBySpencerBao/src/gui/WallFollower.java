@@ -90,7 +90,51 @@ public class WallFollower implements RobotDriver{
 
 	@Override
 	public boolean drive1Step2Exit() throws Exception {
-		// TODO Auto-generated method stub
+		int[] currentPosition;
+		CardinalDirection currentDirection;
+		
+		currentPosition = rob.getCurrentPosition();
+		currentDirection = rob.getCurrentDirection();
+		if (rob.hasStopped()) {
+			throw new Exception("Not enough energy to drive to exit.");
+		}
+		if (rob.isAtExit()) {
+			for (Direction d : Direction.values()) {
+				if (rob.distanceToObstacle(d) == Integer.MAX_VALUE) {
+					switch (d) {
+					case BACKWARD:
+						rob.rotate(Turn.AROUND);
+						break;
+					case FORWARD:
+						break;
+					case LEFT:
+						rob.rotate(Turn.LEFT);
+						break;
+					case RIGHT:
+						rob.rotate(Turn.RIGHT);
+						break;
+					default:
+						break;
+					}
+					rob.move(1);
+					rob.stopFailureAndRepairProcess(Direction.LEFT);
+					rob.stopFailureAndRepairProcess(Direction.FORWARD);
+					rob.stopFailureAndRepairProcess(Direction.RIGHT);
+					rob.stopFailureAndRepairProcess(Direction.BACKWARD);
+					break;
+				}
+			}
+			return true;
+		} else if (!maze.hasWall(currentPosition[0], currentPosition[1], 
+				currentDirection.rotateClockwise())) {					
+			rob.rotate(Turn.LEFT);
+			rob.move(1);
+		} else if (!maze.hasWall(currentPosition[0], currentPosition[1], currentDirection)) {
+			rob.move(1);
+		} else {
+			rob.rotate(Turn.RIGHT);
+		}
+		
 		return false;
 	}
 

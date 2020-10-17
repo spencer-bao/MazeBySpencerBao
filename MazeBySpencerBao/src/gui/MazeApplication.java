@@ -44,33 +44,34 @@ public class MazeApplication extends JFrame {
 	public MazeApplication(String generation, String driver, String flrb) {
 		Controller result = new Controller();
 		result.setDeterministic(false);
-		String msg = null;
+		String msg = "";
 		if (generation == null || "DFS".equalsIgnoreCase(generation)) {
-			msg = "MazeApplication: maze will be generated with a randomized algorithm."; 
+			msg += "MazeApplication: maze will be generated with a randomized algorithm.\n"; 
 		} else if ("Prim".equalsIgnoreCase(generation)){
-		        msg = "MazeApplication: generating random maze with Prim's algorithm.";
+		        msg += "MazeApplication: generating random maze with Prim's algorithm.\n";
 		        result.setBuilder(Order.Builder.Prim);
 	    } else if ("Kruskal".equalsIgnoreCase(generation)){
 	        throw new RuntimeException("Don't know anybody named Kruskal ...");
 	    } else if ("Eller".equalsIgnoreCase(generation)){
-	    	msg = "MazeApplication: generating random maze with Eller's algorithm.";
+	    	msg += "MazeApplication: generating random maze with Eller's algorithm.\n";
 	        result.setBuilder(Order.Builder.Eller);
 	    }
 		
 		if (driver == null || "Manual".equalsIgnoreCase(driver)) {
-			msg = "MazeApplication: maze will be solved manually.";
+			msg += "MazeApplication: maze will be solved manually.\n";
 		}  else if ("Wizard".equalsIgnoreCase(driver)){
-	    	msg = "MazeApplication: maze will be solved with Wizard.";
+	    	msg += "MazeApplication: maze will be solved with Wizard.\n";
 	    	ReliableRobot rob = new ReliableRobot();
 	    	Wizard wiz = new Wizard();
 	    	result.setRobotAndDriver(rob, wiz);
 	    }
 	    else if ("WallFollower".equalsIgnoreCase(driver)){
-	    	msg = "MazeApplication: maze will be solved with MazeFollower.";
+	    	msg += "MazeApplication: maze will be solved with MazeFollower.\n";
 	    	UnreliableRobot rob = new UnreliableRobot(flrb);
 	    	WallFollower wall_e = new WallFollower();
 	    	result.setRobotAndDriver(rob, wall_e);
 	    }
+		System.out.println(msg);
 		
 		add(result.getPanel()) ;
 		// instantiate a key listener that feeds keyboard input into the controller
@@ -198,9 +199,9 @@ public class MazeApplication extends JFrame {
 	 */
 	public static void main(String[] args) {
 	    JFrame app ; 
-	    for (int i = 0; i < args.length; i++) {
-	    	System.out.println(args[i]);
-	    }
+//	    for (int i = 0; i < args.length; i++) {
+//	    	System.out.println(args[i]);
+//	    }
 	    
 		switch (args.length) {
 		case 6:

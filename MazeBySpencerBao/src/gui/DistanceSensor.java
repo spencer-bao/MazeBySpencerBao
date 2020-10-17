@@ -42,6 +42,7 @@ import gui.Robot.Direction;
  *
  */
 public interface DistanceSensor {
+	boolean operational = true;
 	/**
 	 * Tells the distance to an obstacle (a wallboard) that the sensor
 	 * measures. The sensor is assumed to be mounted in a particular

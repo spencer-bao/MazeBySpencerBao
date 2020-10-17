@@ -1,5 +1,14 @@
 package gui;
 
+/**
+ * Responsibilities: Starts the thread if the controller is in the playing state.
+ * Unreliable sensors only work if operational == true. The thread switches operational to true and false.
+ * 
+ * Collaborators: ReliableSensor, Runnable, UnreliableRobot, WallFollower
+ * 
+ * @author Spencer Bao
+ * 
+ */
 public class UnreliableSensor extends ReliableSensor implements Runnable{
 	
 	Thread thread = new Thread(this);
@@ -13,9 +22,10 @@ public class UnreliableSensor extends ReliableSensor implements Runnable{
 		thread.start();
 	}
 	
+	
 	@Override
 	public void run() {
-		while (thread != null) {
+		while (thread != null && controller.currentState == controller.states[2]) {
 			try {
 				operational = true;
 				Thread.sleep(betweenFailureTime);

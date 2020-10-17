@@ -40,6 +40,52 @@ public class MazeApplication extends JFrame {
 	public MazeApplication(String parameter) {
 		init(parameter);
 	}
+	
+	public MazeApplication(String generation, String driver, String flrb) {
+		Controller result = new Controller();
+		result.setDeterministic(false);
+		String msg = null;
+		if (generation == null || "DFS".equalsIgnoreCase(generation)) {
+			msg = "MazeApplication: maze will be generated with a randomized algorithm."; 
+		} else if ("Prim".equalsIgnoreCase(generation)){
+		        msg = "MazeApplication: generating random maze with Prim's algorithm.";
+		        result.setBuilder(Order.Builder.Prim);
+	    } else if ("Kruskal".equalsIgnoreCase(generation)){
+	        throw new RuntimeException("Don't know anybody named Kruskal ...");
+	    } else if ("Eller".equalsIgnoreCase(generation)){
+	    	msg = "MazeApplication: generating random maze with Eller's algorithm.";
+	        result.setBuilder(Order.Builder.Eller);
+	    }
+		
+		if (driver == null || "Manual".equalsIgnoreCase(driver)) {
+			msg = "MazeApplication: maze will be solved manually.";
+		}  else if ("Wizard".equalsIgnoreCase(driver)){
+	    	msg = "MazeApplication: maze will be solved with Wizard.";
+	    	ReliableRobot rob = new ReliableRobot();
+	    	Wizard wiz = new Wizard();
+	    	result.setRobotAndDriver(rob, wiz);
+	    }
+	    else if ("WallFollower".equalsIgnoreCase(driver)){
+	    	msg = "MazeApplication: maze will be solved with MazeFollower.";
+	    	UnreliableRobot rob = new UnreliableRobot(flrb);
+	    	WallFollower wall_e = new WallFollower();
+	    	result.setRobotAndDriver(rob, wall_e);
+	    }
+		
+		add(result.getPanel()) ;
+		// instantiate a key listener that feeds keyboard input into the controller
+		// and add it to the JFrame
+		KeyListener kl = new SimpleKeyListener(this, result) ;
+		addKeyListener(kl) ;
+		// set the frame to a fixed size for its width and height and put it on display
+		setSize(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT+22) ;
+		setVisible(true) ;
+		// focus should be on the JFrame of the MazeApplication and not on the maze panel
+		// such that the SimpleKeyListener kl is used
+		setFocusable(true) ;
+		// start the game, hand over control to the game controller
+		result.start();
+	}
 
 	/**
 	 * Instantiates a controller with settings according to the given parameter.
@@ -81,14 +127,15 @@ public class MazeApplication extends JFrame {
 	    else if ("Wizard".equalsIgnoreCase(parameter))
 	    {
 	    	msg = "MazeApplication: solving random maze with Wizard.";
-	    	ReliableRobot rob = new ReliableRobot();
+	    	ReliableRobot rob = new ReliableRobot(); 
 	    	Wizard wiz = new Wizard();
-	    	result.setRobotAndDriver(rob, wiz);
+	    	result.setRobotAndDriver(rob, wiz); // links the controller to the robot and driver
 	    }
 	    else if ("WallFollower".equalsIgnoreCase(parameter))
 	    {
 	    	msg = "MazeApplication: solving random maze with MazeFollower.";
-	    	UnreliableRobot rob = new UnreliableRobot();
+	    	String string = null;
+	    	UnreliableRobot rob = new UnreliableRobot(string);
 	    	WallFollower wall_e = new WallFollower();
 	    	result.setRobotAndDriver(rob, wall_e);
 	    }
@@ -135,6 +182,7 @@ public class MazeApplication extends JFrame {
 		controller.start();
 	}
 	
+	
 	/**
 	 * Main method to launch Maze game as a java application.
 	 * The application can be operated in three ways. 
@@ -150,7 +198,61 @@ public class MazeApplication extends JFrame {
 	 */
 	public static void main(String[] args) {
 	    JFrame app ; 
+	    for (int i = 0; i < args.length; i++) {
+	    	System.out.println(args[i]);
+	    }
+	    
 		switch (args.length) {
+		case 6:
+		case 5:
+		case 4:
+		case 3:
+		case 2:
+			String generation = null;
+			String driver = null;
+			String reliable = null;
+			for (int i = 0; i < args.length; i++) {
+				switch (args[i]) {
+				case "-g":
+					switch (args[i+1]) {
+					case "Prim":
+					case "Kruskal":
+					case "Eller":
+					case "DFS":
+						generation = args[i+1];
+						break;
+					default:
+						File f = new File(args[i+1]) ;
+				        if (f.exists() && f.canRead())
+				        {
+				        	generation = args[i+1];
+				        }
+				        else {
+				        	System.err.println("Usage: MazeApplication [-g maze] [-d driver] [-r flrb]");
+				        }				
+						break;
+					}
+					break;
+				case "-d":
+					switch (args[i+1]) {
+					case "Wizard":
+					case "WallFollower":
+						driver = args[i+1];
+						break;
+					default:
+						System.err.println("Usage: MazeApplication [-g maze] [-d driver] [-r flrb]");
+						break;
+					}
+					break;
+				case "-r":
+					reliable = args[i+1];
+					break;
+				default:
+					break;
+				}
+			}
+			app = new MazeApplication(generation, driver, reliable);
+			break;
 		case 1 : app = new MazeApplication(args[0]);
 		break ;
 		case 0 : 

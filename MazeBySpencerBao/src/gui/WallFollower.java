@@ -9,8 +9,8 @@ import gui.Robot.Turn;
  * Responsibilities: controls the robot through the maze using the left hand rule algorithm.
  * 
  * Collaborators: ReliableRobot, Controller, RobotDriver
+ * 
  * @author Spencer Bao
- *
  */
 public class WallFollower implements RobotDriver{
 
@@ -38,12 +38,15 @@ public class WallFollower implements RobotDriver{
 		int[] currentPosition;
 		CardinalDirection currentDirection;
 		
-		rob.startFailureAndRepairProcess(Direction.LEFT, UnreliableRobot.MEAN_TIME_BTWN_FAILURES, UnreliableRobot.MEAN_TIME_TO_REPAIR);
+//		rob.startFailureAndRepairProcess(Direction.LEFT, UnreliableRobot.MEAN_TIME_BTWN_FAILURES, UnreliableRobot.MEAN_TIME_TO_REPAIR);
 		while(!finished) {
-			System.out.println("operational: " + rob.leftSensor.operational);
+//			System.out.println("operational: " + rob.leftSensor.operational);
 			while (rob.leftSensor.operational == true) {
 				currentPosition = rob.getCurrentPosition();
 				currentDirection = rob.getCurrentDirection();
+				if (rob.hasStopped()) {
+					throw new Exception("Not enough energy to drive to exit.");
+				}
 				if (rob.isAtExit()) {
 					for (Direction d : Direction.values()) {
 						if (rob.distanceToObstacle(d) == Integer.MAX_VALUE) {
@@ -64,6 +67,9 @@ public class WallFollower implements RobotDriver{
 							}
 							rob.move(1);
 							rob.stopFailureAndRepairProcess(Direction.LEFT);
+							rob.stopFailureAndRepairProcess(Direction.FORWARD);
+							rob.stopFailureAndRepairProcess(Direction.RIGHT);
+							rob.stopFailureAndRepairProcess(Direction.BACKWARD);
 							break;
 						}
 					}

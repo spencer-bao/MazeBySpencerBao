@@ -36,6 +36,7 @@ public class Wizard implements RobotDriver{
 		
 		while (!finished) {
 			if (rob.hasStopped()) {
+				rob.controller.switchToTitle();
 				throw new Exception("Not enough energy to drive to exit.");
 			}
 			if (rob.isAtExit()) {

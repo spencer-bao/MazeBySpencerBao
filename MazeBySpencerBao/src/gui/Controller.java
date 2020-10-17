@@ -1,6 +1,7 @@
 package gui;
 
 import gui.Constants.UserInput;
+import gui.Robot.Direction;
 
 import java.util.Random;
 
@@ -190,6 +191,13 @@ public class Controller {
         		driver.setRobot(robot);
         		driver.setMaze(config);
         		driver.drive2Exit();
+        		robot.startFailureAndRepairProcess(Direction.LEFT, UnreliableRobot.MEAN_TIME_BTWN_FAILURES, UnreliableRobot.MEAN_TIME_TO_REPAIR);
+        		Thread.sleep(1300);
+        		robot.startFailureAndRepairProcess(Direction.FORWARD, UnreliableRobot.MEAN_TIME_BTWN_FAILURES, UnreliableRobot.MEAN_TIME_TO_REPAIR);
+        		Thread.sleep(1300);
+        		robot.startFailureAndRepairProcess(Direction.RIGHT, UnreliableRobot.MEAN_TIME_BTWN_FAILURES, UnreliableRobot.MEAN_TIME_TO_REPAIR);
+        		Thread.sleep(1300);
+        		robot.startFailureAndRepairProcess(Direction.BACKWARD, UnreliableRobot.MEAN_TIME_BTWN_FAILURES, UnreliableRobot.MEAN_TIME_TO_REPAIR);
         	} catch (Exception e) {
         		System.out.println("switchFromGeneratingToPlaying(): robotDriver has stopped");
         	}
@@ -203,6 +211,10 @@ public class Controller {
         currentState = states[3];
         currentState.setPathLength(pathLength);
         currentState.start(this, panel);
+//        robot.stopFailureAndRepairProcess(Direction.LEFT);
+//		robot.stopFailureAndRepairProcess(Direction.FORWARD);
+//		robot.stopFailureAndRepairProcess(Direction.RIGHT);
+//		robot.stopFailureAndRepairProcess(Direction.BACKWARD);
     }
     /**
      * Switches the controller to the initial screen.
@@ -210,6 +222,10 @@ public class Controller {
     public void switchToTitle() {
         currentState = states[0];
         currentState.start(this, panel);
+//        robot.stopFailureAndRepairProcess(Direction.LEFT);
+//		robot.stopFailureAndRepairProcess(Direction.FORWARD);
+//		robot.stopFailureAndRepairProcess(Direction.RIGHT);
+//		robot.stopFailureAndRepairProcess(Direction.BACKWARD);
     }
     
     /**

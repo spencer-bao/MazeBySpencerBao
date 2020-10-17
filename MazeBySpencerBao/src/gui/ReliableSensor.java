@@ -17,6 +17,7 @@ class ReliableSensor implements DistanceSensor{
 	Maze maze;
 	Direction currentDirection;
 	public static final int SENSE_ENERGY = 1;
+	boolean operational = true;
 	
 	@Override
 	public int distanceToObstacle(int[] currentPosition, CardinalDirection currentDirection, float[] powersupply)
@@ -33,10 +34,8 @@ class ReliableSensor implements DistanceSensor{
 		
 		dx = direction.getDirection()[0];
 		dy = direction.getDirection()[1];
-		while (maze.getFloorplan().
-				hasNoWall(position[0], position[1], direction)){
-			if (maze.getFloorplan().
-					isExitPosition(position[0], position[1])) {
+		while (maze.getFloorplan().hasNoWall(position[0], position[1], direction)){ // check for walls in the direction
+			if (maze.getFloorplan().isExitPosition(position[0], position[1])) { // the exit will lead to infinity
 				return Integer.MAX_VALUE;
 			}
 			distance += 1;

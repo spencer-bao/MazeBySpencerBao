@@ -1,8 +1,5 @@
 package gui;
 
-import java.awt.Dimension;
-import javax.swing.JComponent;
-
 import generation.CardinalDirection;
 import gui.P5Panel.RenderingHints;
 
@@ -15,7 +12,8 @@ import gui.P5Panel.RenderingHints;
  * adjusted for Maze setting by
  * @author Peter Kemper
  */
-public class CompassRose extends JComponent {
+//public class CompassRose extends JComponent {
+public class CompassRose {
 	
 	static MazePanel panel;
 	private static final long serialVersionUID = 1916497172430988388L;
@@ -237,39 +235,39 @@ public class CompassRose extends JComponent {
         return scaler;
     }
     
-    public void setScaler(double scaler) {
-        this.scaler = scaler;
-        repaint();
-    }
+//    public void setScaler(double scaler) {
+//        this.scaler = scaler;
+//        repaint();
+//    }
     
     public double getMarkerRadius() {
         return markerRadius;
     }
     
-    public void setMarkerRadius(double markerRadius) {
-        this.markerRadius = markerRadius;
-        repaint();
-    }
+//    public void setMarkerRadius(double markerRadius) {
+//        this.markerRadius = markerRadius;
+//        repaint();
+//    }
     
     public String getMarkerFont() {
         return markerFont;
     }
     
     
-    public void setMarkerFont(String markerFont) {
-        this.markerFont = markerFont;
-        repaint();
-    }
+//    public void setMarkerFont(String markerFont) {
+//        this.markerFont = markerFont;
+//        repaint();
+//    }
     
-    @Override
-    public Dimension getPreferredSize() {
-        Dimension dim = super.getPreferredSize();
-        /* original code
-        int min = Math.min(dim.width, dim.height);
-        */
-        int min = size; // simply use given size
-        dim.setSize(min, min);
-        return dim;
-    }
+//    @Override
+//    public Dimension getPreferredSize() {
+//        Dimension dim = super.getPreferredSize();
+//        /* original code
+//        int min = Math.min(dim.width, dim.height);
+//        */
+//        int min = size; // simply use given size
+//        dim.setSize(min, min);
+//        return dim;
+//    }
     
 }

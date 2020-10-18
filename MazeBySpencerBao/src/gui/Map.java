@@ -121,7 +121,7 @@ public class Map {
 	 * @param showSolution if true shows a path to the exit as a yellow line,
 	 * otherwise path is not shown.
 	 */
-	public void draw(int x, int y, int angle, int walkStep,
+	public void draw(MazePanel panel, int x, int y, int angle, int walkStep,
 			boolean showMaze, boolean showSolution) {
 //		Graphics g = panel.getBufferGraphics() ;
         // viewers draw on the buffer graphics

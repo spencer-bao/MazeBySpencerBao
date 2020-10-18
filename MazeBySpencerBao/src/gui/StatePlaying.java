@@ -227,8 +227,7 @@ public class StatePlaying extends DefaultState {
     		return;
     	}
     	// draw the first person view and the map view if wanted
-    	firstPersonView.draw(panel, px, py, walkStep, angle, 
-    			getPercentageForDistanceToExit()) ;
+    	firstPersonView.draw(panel, px, py, walkStep, angle, getPercentageForDistanceToExit()) ;
         if (isInMapMode()) {
 			mapView.draw(panel, px, py, angle, walkStep,
 					isInShowMazeMode(),isInShowSolutionMode()) ;
@@ -414,7 +413,7 @@ public class StatePlaying extends DefaultState {
     	else {
     		// draw compass rose
     		cr.setCurrentDirection(getCurrentDirection());
-    		cr.paintComponent(panel.getBufferGraphics());
+    		cr.paintComponent();
     	}
     	panel.update();
     }

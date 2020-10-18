@@ -1,14 +1,5 @@
 package gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.font.GlyphVector;
-import java.awt.geom.Rectangle2D;
-
 import javax.swing.JComponent;
 
 import generation.CardinalDirection;
@@ -49,6 +40,8 @@ public class CompassRose extends JComponent {
     private int centerY; // y coordinate of center point
     private int size; // size of compass rose
     private CardinalDirection currentDir; 
+    
+    MazePanel panel;
     
     /**
      * Construct a compass rose with the default settings.
@@ -220,14 +213,17 @@ public class CompassRose extends JComponent {
         }
 	}
  
-    private void drawMarker(Graphics2D g2, float x, float y, String str) {
-        GlyphVector gv = markerFont.createGlyphVector(g2.getFontRenderContext(), str);
-        Rectangle2D rect = gv.getVisualBounds();
-        
-        x -= rect.getWidth() / 2;
-        y += rect.getHeight() / 2;
-        
-        g2.drawGlyphVector(gv, x, y);
+    private void drawMarker(float x, float y, String str) {
+//        GlyphVector gv = markerFont.createGlyphVector(g2.getFontRenderContext(), str);
+//        Rectangle2D rect = gv.getVisualBounds();
+//        
+//        x -= rect.getWidth() / 2;
+//        y += rect.getHeight() / 2;
+//        
+//        g2.drawGlyphVector(gv, x, y);
+    	
+    	panel.addMarker(x, y, str);
+    	
         
     }
  

@@ -2,11 +2,16 @@ package gui;
 
 import java.awt.AWTError;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Panel;
 import java.awt.RenderingHints;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
+
+import javax.print.attribute.standard.PrinterStateReasons;
 
 /**
  * Add functionality for double buffering to an AWT Panel class.
@@ -207,54 +212,60 @@ public class MazePanel extends Panel implements P5Panel{
 		// graphics.setColor(Color.black);
 		// dynamic color setting: 
 		graphics.setColor(getBackgroundColor(percentToExit, true));
-		graphics.fillRect(0, 0, viewWidth, viewHeight/2);
+//		graphics.fillRect(0, 0, viewWidth, viewHeight/2);
+		addFilledRectangle(0, 0, viewWidth, viewHeight/2);
 		// grey rectangle in lower half of screen
 		// graphics.setColor(Color.darkGray);
 		// dynamic color setting: 
 		graphics.setColor(getBackgroundColor(percentToExit, false));
-		graphics.fillRect(0, viewHeight/2, viewWidth, viewHeight/2);
+//		graphics.fillRect(0, viewHeight/2, viewWidth, viewHeight/2);
+		addFilledRectangle(0, viewHeight/2, viewWidth, viewHeight/2);
 
 	}
 
 	@Override
 	public void addFilledRectangle(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
+		graphics.fillRect(x, y, width, height);
 		
 	}
 
 	@Override
 	public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-		// TODO Auto-generated method stub
-		
+		graphics.fillPolygon(xPoints, yPoints, nPoints);		
 	}
 
 	@Override
 	public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-		// TODO Auto-generated method stub
-		
+		graphics.drawPolygon(xPoints, yPoints, nPoints);
 	}
 
 	@Override
 	public void addLine(int startX, int startY, int endX, int endY) {
-		// TODO Auto-generated method stub
-		
+		graphics.drawLine(startX, startY, endX, endY);
 	}
 
 	@Override
 	public void addFilledOval(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
+		graphics.fillOval(x, y, width, height);
 		
 	}
 
 	@Override
 	public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-		// TODO Auto-generated method stub
+		graphics.drawArc(x, y, width, height, startAngle, arcAngle);
 		
 	}
 
 	@Override
 	public void addMarker(float x, float y, String str) {
-		// TODO Auto-generated method stub
+		Font markerFont = null;
+		GlyphVector gv = markerFont.createGlyphVector(graphics.getFontRenderContext(), str);
+        Rectangle2D rect = gv.getVisualBounds();
+        
+        x -= rect.getWidth() / 2;
+        y += rect.getHeight() / 2;
+        
+        graphics.drawGlyphVector(gv, x, y);
 		
 	}
 

@@ -1,7 +1,6 @@
 package gui;
 
-import java.awt.Panel;
-
+import java.awt.Dimension;
 import javax.swing.JComponent;
 
 import generation.CardinalDirection;
@@ -18,7 +17,7 @@ import gui.P5Panel.RenderingHints;
  */
 public class CompassRose extends JComponent {
 	
-	MazePanel panel;
+	static MazePanel panel;
 	private static final long serialVersionUID = 1916497172430988388L;
 	private final int greenWM = panel.decodeRGB("#115740");
 	private final int goldWM = panel.decodeRGB("#916f41");
@@ -38,7 +37,7 @@ public class CompassRose extends JComponent {
     private double scaler;
     
     private double markerRadius;
-    private Font markerFont;
+    private String markerFont;
     
     // (x,y) coordinates of center point on overall area
     private int centerX; // x coordinate of center point
@@ -52,7 +51,7 @@ public class CompassRose extends JComponent {
      * Construct a compass rose with the default settings.
      */
     public CompassRose() {
-        this(0.9, 1.7, Font.decode("Serif-PLAIN-16"));
+        this(0.9, 1.7, "Serif-PLAIN-16");
     }
     
     
@@ -64,7 +63,7 @@ public class CompassRose extends JComponent {
      *                      will position the markers outside of the bordering circle.
      * @param markerFont    The font used for the markers.
      */
-    public CompassRose(double scaler, double markerRadius, Font markerFont) {
+    public CompassRose(double scaler, double markerRadius, String markerFont) {
         this.scaler = scaler;
         this.markerRadius = markerRadius;
         this.markerFont = markerFont;
@@ -84,7 +83,6 @@ public class CompassRose extends JComponent {
     	currentDir = cd;
     }
 
-    @Override
     public void paintComponent() {
         
 //        final Graphics2D g2 = (Graphics2D) g;
@@ -103,23 +101,24 @@ public class CompassRose extends JComponent {
         panel.setRenderingHint(java.awt.RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         panel.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // draw background disc
-        drawBackground(g2, width);
+        drawBackground(width);
         // draw main part in all 4 directions in same color
         // x, y arrays used for drawing polygons
         // starting point is always (centerX, centerY)
-        g2.setColor(MAIN_COLOR);
+//        setColor(MAIN_COLOR);
+        panel.setColor(MAIN_COLOR);
         final int[] x = new int[3];
         final int[] y = new int[3];
         x[0] = centerX;
         y[0] = centerY;
-        drawMainNorth(g2, mainLength, mainWidth, x, y);
-        drawMainEast(g2, mainLength, mainWidth, x, y);
-        drawMainSouth(g2, mainLength, mainWidth, x, y);
-        drawMainWest(g2, mainLength, mainWidth, x, y);
+        drawMainNorth(mainLength, mainWidth, x, y);
+        drawMainEast(mainLength, mainWidth, x, y);
+        drawMainSouth(mainLength, mainWidth, x, y);
+        drawMainWest(mainLength, mainWidth, x, y);
         
-        drawBorderCircle(g2, width);
+        drawBorderCircle(width);
         
-        drawDirectionMarker(g2, width);
+        drawDirectionMarker(width);
     }
 
 
@@ -171,19 +170,19 @@ public class CompassRose extends JComponent {
 		final int x = centerX - width / 2 + CIRCLE_BORDER;
 		final int y = centerY - width / 2 + CIRCLE_BORDER;
 		final int w = width - 2 * CIRCLE_BORDER;
-		g2.setColor(CIRCLE_SHADE);
-        g2.drawArc(x, y, w, w, 45, 180);
-        g2.setColor(CIRCLE_HIGHLIGHT);
-        g2.drawArc(x, y, w, w, 180 + 45, 180);
+		panel.setColor(CIRCLE_SHADE);
+        panel.addArc(x, y, w, w, 45, 180);
+        panel.setColor(CIRCLE_HIGHLIGHT);
+        panel.addArc(x, y, w, w, 180 + 45, 180);
 	}
 
 
-	private void drawDirectionMarker(Graphics2D g2, int width) {
-		if (!Double.isNaN(markerRadius) && markerFont != null) {
+	private void drawDirectionMarker(int width) {
+		if (!Double.isNaN(markerRadius) && panel.decodeFont(markerFont)!= null) {
             
             int pos = (int) (width * markerRadius / 2);
             
-            g2.setColor(MARKER_COLOR);
+            panel.setColor(MARKER_COLOR);
             /* original code
             drawMarker(g2, mid, mid - pos, trans.get("lbl.north"));
             drawMarker(g2, mid + pos, mid, trans.get("lbl.east"));
@@ -196,27 +195,27 @@ public class CompassRose extends JComponent {
             // WARNING: north south confusion
             // currendDir South is going upward on the map
             if (CardinalDirection.South == currentDir)
-            	g2.setColor(MARKER_COLOR);
+            	panel.setColor(MARKER_COLOR);
             else
-            	g2.setColor(goldWM);
-            drawMarker(g2, centerX, centerY - pos, "N");
+            	panel.setColor(goldWM);
+            drawMarker(centerX, centerY - pos, "N");
             if (CardinalDirection.East == currentDir)
-            	g2.setColor(MARKER_COLOR);
+            	panel.setColor(MARKER_COLOR);
             else
-            	g2.setColor(goldWM);
-            drawMarker(g2, centerX + pos, centerY, "E");
+            	panel.setColor(goldWM);
+            drawMarker(centerX + pos, centerY, "E");
             // WARNING: north south confusion
             // currendDir North is going downwards on the map
             if (CardinalDirection.North == currentDir)
-            	g2.setColor(MARKER_COLOR);
+            	panel.setColor(MARKER_COLOR);
             else
-            	g2.setColor(goldWM);
-            drawMarker(g2, centerX, centerY + pos, "S");
+            	panel.setColor(goldWM);
+            drawMarker(centerX, centerY + pos, "S");
             if (CardinalDirection.West == currentDir)
-            	g2.setColor(MARKER_COLOR);
+            	panel.setColor(MARKER_COLOR);
             else
-            	g2.setColor(goldWM);
-            drawMarker(g2, centerX - pos, centerY, "W");
+            	panel.setColor(goldWM);
+            drawMarker(centerX - pos, centerY, "W");
         }
 	}
  
@@ -252,12 +251,12 @@ public class CompassRose extends JComponent {
         repaint();
     }
     
-    public Font getMarkerFont() {
+    public String getMarkerFont() {
         return markerFont;
     }
     
     
-    public void setMarkerFont(Font markerFont) {
+    public void setMarkerFont(String markerFont) {
         this.markerFont = markerFont;
         repaint();
     }

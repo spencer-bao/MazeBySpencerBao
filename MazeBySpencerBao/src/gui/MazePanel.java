@@ -1,17 +1,13 @@
 package gui;
 
-import java.awt.AWTError;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Panel;
-import java.awt.RenderingHints;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
-
-import javax.print.attribute.standard.PrinterStateReasons;
 
 /**
  * Add functionality for double buffering to an AWT Panel class.
@@ -138,10 +134,20 @@ public class MazePanel extends Panel implements P5Panel{
 		return Color.decode(hex).getRGB();
 	}
 	
+	
+	
 	public int convertRGB(float r, float g, float b, float a) {
 		return new Color(r, g, b, a).getRGB();
 
 	}
+	
+	public Font decodeFont(String string) {
+		return Font.decode(string);
+	}
+	
+//	public String convertFont(Font font) {
+//		return Font.
+//	}
 
 	@Override
 	public int getColor() {
@@ -282,5 +288,7 @@ public class MazePanel extends Panel implements P5Panel{
 		graphics.setRenderingHint(hintKey, hintValue);
 		
 	}
+	
+	
 
 }

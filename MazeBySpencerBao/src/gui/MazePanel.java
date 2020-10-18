@@ -154,6 +154,17 @@ public class MazePanel extends Panel implements P5Panel{
 		return graphics.getColor().getRGB();
 	}
 
+	
+	private int calculateRGBValue(final int distance, int extensionX) {
+        // compute rgb value, depends on distance and x direction
+        // 7 in binary is 0...0111
+        // use AND to get last 3 digits of distance
+        final int part1 = distance & 7;
+        final int add = (extensionX != 0) ? 1 : 0;
+        final int rgbValue = ((part1 + 2 + add) * 70) / 8 + 80;
+        return rgbValue;
+    }
+	
 	@Override
 	public int getWallColor(int distance, int cc, int extensionX) {
 		
@@ -164,9 +175,7 @@ public class MazePanel extends Panel implements P5Panel{
         
 		
         // calculateRGBValue(distance) from Wall
-        final int part1 = distance & 7;
-        final int add = (extensionX != 0) ? 1 : 0;
-        final int rgbValue = ((part1 + 2 + add) * 70) / 8 + 80;
+        int rgbValue = calculateRGBValue(distance, extensionX);
         
      // mod used to limit the number of colors to 6
         

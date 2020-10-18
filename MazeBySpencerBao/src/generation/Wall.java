@@ -1,6 +1,5 @@
 package generation;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import org.w3c.dom.Document;
@@ -60,7 +59,7 @@ public class Wall {
     /**
      * color of wall, only set by constructor and file reader.
      */
-    private Color col;
+    private int col;
     /**
      * partition flag, initially set to false. 
      * BSPBuilder code sets it to true for border case
@@ -138,8 +137,8 @@ public class Wall {
     /**
      * Default minimum value for RGB values.
      */
-    private static final int RGB_DEF = 20;
-    private static final int RGB_DEF_GREEN = 60;
+//    private static final int RGB_DEF = 20;
+//    private static final int RGB_DEF_GREEN = 60;
     /**
      * Determine and set the color for this wall.
      *
@@ -178,7 +177,7 @@ public class Wall {
 //        }
     	
     	//After P5:
-    	setColor(new Color(panel.getWallColor(distance, cc, getExtensionX())));
+    	setColor(panel.getWallColor(distance, cc, getExtensionX()));
     	
     }
 
@@ -189,15 +188,15 @@ public class Wall {
      *            value to select color
      * @return the calculated RGB value
      */
-    private int calculateRGBValue(final int distance) {
-        // compute rgb value, depends on distance and x direction
-        // 7 in binary is 0...0111
-        // use AND to get last 3 digits of distance
-        final int part1 = distance & 7;
-        final int add = (getExtensionX() != 0) ? 1 : 0;
-        final int rgbValue = ((part1 + 2 + add) * 70) / 8 + 80;
-        return rgbValue;
-    }
+//    private int calculateRGBValue(final int distance) {
+//        // compute rgb value, depends on distance and x direction
+//        // 7 in binary is 0...0111
+//        // use AND to get last 3 digits of distance
+//        final int part1 = distance & 7;
+//        final int add = (getExtensionX() != 0) ? 1 : 0;
+//        final int rgbValue = ((part1 + 2 + add) * 70) / 8 + 80;
+//        return rgbValue;
+//    }
 
     /**
      * Computes specific integer values for the X,Y directions.
@@ -273,7 +272,7 @@ public class Wall {
         MazeFileWriter.appendChild(doc, mazeXML, "ySeg_" + number + "_" + i,
                 getStartPositionY());
         MazeFileWriter.appendChild(doc, mazeXML, "colSeg_" + number + "_" + i,
-                getColor().getRGB());
+                getColor());
     }
 
     /**
@@ -303,7 +302,7 @@ public class Wall {
             return false;
         }
         if ((dist != o.dist) || (partition != o.partition) || (seen != o.seen)
-                || (col.getRGB() != o.col.getRGB())) {
+                || (col != o.col)) {
             return false;
         }
         // all fields are equal, so both objects are equal
@@ -374,7 +373,7 @@ public class Wall {
     /**
      * @return the color
      */
-    public Color getColor() {
+    public int getColor() {
         return col;
     }
 
@@ -382,7 +381,7 @@ public class Wall {
      * @param color
      *            the color to set
      */
-    public void setColor(final Color color) {
+    public void setColor(final int color) {
         /*
          * for debugging: use random color settings such that all walls look
          * different

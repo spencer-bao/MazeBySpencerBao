@@ -3,9 +3,7 @@
  */
 package gui;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.Panel;
 import java.util.ArrayList;
 
 import generation.BSPBranch;
@@ -26,6 +24,7 @@ import generation.Wall;
  * Refactored by Peter Kemper
  */
 public class FirstPersonView {
+	static MazePanel panel;
 	// Constants
 	final int viewZ = 50;  // constant from StatePlaying.java
 	// Instance variables set once and for all in constructor call
@@ -40,9 +39,9 @@ public class FirstPersonView {
 	final private int stepSize;   // = map_unit/4;
 	// map scale may be adjusted by user input, controlled in StatePlaying
 	// colors for background
-	static final Color greenWM = Color.decode("#115740");
-	static final Color goldWM = Color.decode("#916f41");
-	static final Color yellowWM = Color.decode("#FFFF99");
+	static final int greenWM = panel.decodeRGB("#115740");
+	static final int goldWM = panel.decodeRGB("#916f41");
+	static final int yellowWM = panel.decodeRGB("#FFFF99");
 	
 	/**
 	 * A data structure to store which wallboards have been visible during
@@ -78,7 +77,7 @@ public class FirstPersonView {
 	 * with the current buffer image is the responsibility of
 	 * the StatePlaying class.
 	 */
-	private Graphics2D gc; 
+//	private Graphics2D gc; 
 	
 	/**
 	 * The current position (x,y) scaled by map_unit and 
@@ -122,7 +121,7 @@ public class FirstPersonView {
 	private int drawRectWallCounter;
 	private int nesting = 0;
 	
-	MazePanel panel;
+	
 	/**
 	 * Constructor
 	 * @param width of display
@@ -158,13 +157,13 @@ public class FirstPersonView {
 	 */
 	public void draw(MazePanel panel, int x, int y, int walkStep, int ang, float percentToExit) {
 		// obtain a Graphics2D object we can draw on
-		Graphics g = panel.getBufferGraphics() ;
+//		Graphics g = panel.getBufferGraphics() ;
         // viewers draw on the buffer graphics
         if (panel.isOperational()) {
             System.out.println("FirstPersonDrawer.draw: can't get graphics object to draw on, skipping redraw operation") ;
             return;
         }
-        gc = (Graphics2D) g ;
+//        gc = (Graphics2D) g ;
         
         // update fields angle, viewx, viewy for current position and viewing angle
         angle = ang ;
@@ -174,7 +173,7 @@ public class FirstPersonView {
         // draw background figure: black on bottom half, grey on top half
         drawBackground(percentToExit);
         // set color to white and draw what ever can be seen from the current position
-        g.setColor(Color.white);
+        panel.setColor(panel.decodeRGB("FFFFFF"));
         // reset the set of ranges to a single new element (0,width-1)
         // to cover the full width of the view 
         // as we have not drawn any polygons (walls) yet.
@@ -244,10 +243,11 @@ public class FirstPersonView {
 	 * @param top is true for the top triangle, false for the bottom
 	 * @return the color to use for the background rectangle
 	 */
-	private Color getBackgroundColor(float percentToExit, boolean top) {
-		return top? blend(yellowWM, goldWM, percentToExit) : 
-			blend(Color.lightGray, greenWM, percentToExit);
-	}
+//	private int getBackgroundColor(float percentToExit, boolean top) {
+////		return top? blend(yellowWM, goldWM, percentToExit) : 
+////			blend(Color.lightGray, greenWM, percentToExit);
+//		return top? panel.getBackground();
+//	}
 	/**
 	 * Calculates the weighted average of the two given colors
 	 * @param c0 the one color
@@ -255,18 +255,18 @@ public class FirstPersonView {
 	 * @param weight0 of c0
 	 * @return blend of colors c0 and c1 as weighted average
 	 */
-	private Color blend(Color c0, Color c1, double weight0) {
-		if (weight0 < 0.1)
-			return c1;
-		if (weight0 > 0.95)
-			return c0;
-	    double r = weight0 * c0.getRed() + (1-weight0) * c1.getRed();
-	    double g = weight0 * c0.getGreen() + (1-weight0) * c1.getGreen();
-	    double b = weight0 * c0.getBlue() + (1-weight0) * c1.getBlue();
-	    double a = Math.max(c0.getAlpha(), c1.getAlpha());
-
-	    return new Color((int) r, (int) g, (int) b, (int) a);
-	  }
+//	private Color blend(Color c0, Color c1, double weight0) {
+//		if (weight0 < 0.1)
+//			return c1;
+//		if (weight0 > 0.95)
+//			return c0;
+//	    double r = weight0 * c0.getRed() + (1-weight0) * c1.getRed();
+//	    double g = weight0 * c0.getGreen() + (1-weight0) * c1.getGreen();
+//	    double b = weight0 * c0.getBlue() + (1-weight0) * c1.getBlue();
+//	    double a = Math.max(c0.getAlpha(), c1.getAlpha());
+//
+//	    return new Color((int) r, (int) g, (int) b, (int) a);
+//	  }
 	/**
 	 * Recursive method to explore tree of BSP nodes and draw all walls in leaf nodes 
 	 * where the bounding box is visible
@@ -478,7 +478,7 @@ public class FirstPersonView {
 		
 		// moved code for drawing bits and pieces into yet another method to 
 		// gain more clarity on what information is actually needed
-		gc.setColor(wall.getColor());
+		panel.setColor(wall.getColor().getRGB());
 		boolean drawn = drawPolygons(x1, x2, y11, y12, y21, y22);
 		
 		if (drawn && !wall.isSeen()) {
@@ -558,7 +558,8 @@ public class FirstPersonView {
 			// debug
 			//System.out.println("polygon-x: " + xps[0] + ", " + xps[1] + ", " + xps[2] + ", " + xps[3]) ;
 			//System.out.println("polygon-y: " + yps[0] + ", " + yps[1] + ", " + yps[2] + ", " + yps[3]) ;
-			gc.fillPolygon(xps, yps, 4);
+//			panel.fillPolygon(xps, yps, 4);
+			panel.addFilledPolygon(xps, yps, 4);
 			// for debugging purposes, code will draw a red line around polygon
 			// this makes individual walls visible
 			/*

@@ -133,10 +133,18 @@ public class MazePanel extends Panel implements P5Panel{
 		Color color = new Color(rgb);
 		graphics.setColor(color);		
 	}
+	
+	public int decodeRGB(String hex) {
+		return Color.decode(hex).getRGB();
+	}
+	
+	public int convertRGB(float r, float g, float b, float a) {
+		return new Color(r, g, b, a).getRGB();
+
+	}
 
 	@Override
 	public int getColor() {
-		
 		return graphics.getColor().getRGB();
 	}
 

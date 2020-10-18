@@ -1,8 +1,11 @@
 package gui;
 
+import java.awt.Panel;
+
 import javax.swing.JComponent;
 
 import generation.CardinalDirection;
+import gui.P5Panel.RenderingHints;
 
 /**
  * A component that draws a compass rose.  This class has no other functionality, but superclasses
@@ -14,20 +17,22 @@ import generation.CardinalDirection;
  * @author Peter Kemper
  */
 public class CompassRose extends JComponent {
+	
+	MazePanel panel;
 	private static final long serialVersionUID = 1916497172430988388L;
-	private static final Color greenWM = Color.decode("#115740");
-	private static final Color goldWM = Color.decode("#916f41");
+	private final int greenWM = panel.decodeRGB("#115740");
+	private final int goldWM = panel.decodeRGB("#916f41");
 	
 
-    private static final Color MAIN_COLOR = greenWM; //new Color(0.4f, 0.4f, 1.0f);
+    private final int MAIN_COLOR = greenWM; //new Color(0.4f, 0.4f, 1.0f);
     private static final float MAIN_LENGTH = 0.95f;
     private static final float MAIN_WIDTH = 0.15f;
     
     private static final int CIRCLE_BORDER = 2;
-    private static final Color CIRCLE_HIGHLIGHT = new Color(1.0f, 1.0f, 1.0f, 0.8f); 
-    private static final Color CIRCLE_SHADE = new Color(1.0f, 1.0f, 1.0f, 0.3f); //new Color(0.0f, 0.0f, 0.0f, 0.2f); 
+    private final int CIRCLE_HIGHLIGHT = panel.convertRGB(1.0f, 1.0f, 1.0f, 0.8f); 
+    private final int CIRCLE_SHADE 	= panel.convertRGB(1.0f, 1.0f, 1.0f, 0.3f); //new Color(0.0f, 0.0f, 0.0f, 0.2f); 
     
-    private static final Color MARKER_COLOR = Color.black; //Color.WHITE; //Color.BLACK;
+    private final int MARKER_COLOR = panel.decodeRGB("#000000");//Color.WHITE; //Color.BLACK;
     
 
     private double scaler;
@@ -41,7 +46,7 @@ public class CompassRose extends JComponent {
     private int size; // size of compass rose
     private CardinalDirection currentDir; 
     
-    MazePanel panel;
+   
     
     /**
      * Construct a compass rose with the default settings.
@@ -80,9 +85,9 @@ public class CompassRose extends JComponent {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent() {
         
-        final Graphics2D g2 = (Graphics2D) g;
+//        final Graphics2D g2 = (Graphics2D) g;
         
         
         /* Original code
@@ -95,8 +100,8 @@ public class CompassRose extends JComponent {
         final int mainLength = (int) (width * MAIN_LENGTH / 2);
         final int mainWidth = (int) (width * MAIN_WIDTH / 2);
         
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        panel.setRenderingHint(java.awt.RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        panel.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // draw background disc
         drawBackground(g2, width);
         // draw main part in all 4 directions in same color
@@ -118,49 +123,51 @@ public class CompassRose extends JComponent {
     }
 
 
-	private void drawBackground(final Graphics2D g2, int width) {
-		g2.setColor(Color.white);
+	private void drawBackground(int width) {
+		panel.setColor(16777215); // white rgb
 		final int x = centerX - size;
 		final int y = centerY - size;
 		final int w = 2 * size;// - 2 * CIRCLE_BORDER;
-        g2.fillOval(x,y,w,w);
+        panel.addFilledOval(x, y, w, w);
 	}
 
 
-	private void drawMainWest(Graphics2D g2, int length, int width, int[] x, int[] y) {
+	private void drawMainWest(int length, int width, int[] x, int[] y) {
 		x[1] = centerX - length;
         y[1] = centerY;
         x[2] = centerX - width;
         y[2] = centerY + width;
-        g2.fillPolygon(x, y, 3);
+//        panel.fillPolygon(x, y, 3);
+        panel.addFilledPolygon(x, y, 3);
 
         y[2] = centerY - width;
-        g2.drawPolygon(x, y, 3);
+//        g2.drawPolygon(x, y, 3);
+        panel.addPolygon(x, y, 3);
 	}
-	private void drawMainEast(Graphics2D g2, int length, int width, int[] x, int[] y) {
+	private void drawMainEast(int length, int width, int[] x, int[] y) {
 		// observation: the 2 triangles to the right are drawn the same
 		// way as for the left if one inverts the sign for length and width
 		// i.e. exchanges addition and subtraction
-		drawMainWest(g2, -length, -width, x, y);
+		drawMainWest(-length, -width, x, y);
 	}
-	private void drawMainSouth(Graphics2D g2, int length, int width, int[] x, int[] y) {
+	private void drawMainSouth(int length, int width, int[] x, int[] y) {
 		x[1] = centerX;
         y[1] = centerY + length;
         x[2] = centerX + width;
         y[2] = centerY + width;
-        g2.fillPolygon(x, y, 3);
+        panel.addFilledPolygon(x, y, 3);
         
         x[2] = centerX - width;
-        g2.drawPolygon(x, y, 3);
+        panel.addPolygon(x, y, 3);
 	}
-	private void drawMainNorth(Graphics2D g2, int length, int width, int[] x, int[] y) {
+	private void drawMainNorth(int length, int width, int[] x, int[] y) {
 		// observation: the 2 triangles to the top are drawn the same
 		// way as for the bottom if one inverts the sign for length and width
 		// i.e. exchanges addition and subtraction
-		drawMainSouth(g2, -length, -width, x, y);
+		drawMainSouth(-length, -width, x, y);
 	}
 
-	private void drawBorderCircle(Graphics2D g2, int width) {
+	private void drawBorderCircle(int width) {
 		final int x = centerX - width / 2 + CIRCLE_BORDER;
 		final int y = centerY - width / 2 + CIRCLE_BORDER;
 		final int w = width - 2 * CIRCLE_BORDER;

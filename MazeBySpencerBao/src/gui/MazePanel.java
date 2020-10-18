@@ -177,11 +177,43 @@ public class MazePanel extends Panel implements P5Panel{
         }
 		return rgb;
 	}
+	
+	private Color getBackgroundColor(float percentToExit, boolean top) {
+		final Color greenWM = Color.decode("#115740");
+		final Color goldWM = Color.decode("#916f41");
+		final Color yellowWM = Color.decode("#FFFF99");
+		return top? blend(yellowWM, goldWM, percentToExit) : 
+			blend(Color.lightGray, greenWM, percentToExit);
+	}
+	
+	private Color blend(Color c0, Color c1, double weight0) {
+		if (weight0 < 0.1)
+			return c1;
+		if (weight0 > 0.95)
+			return c0;
+	    double r = weight0 * c0.getRed() + (1-weight0) * c1.getRed();
+	    double g = weight0 * c0.getGreen() + (1-weight0) * c1.getGreen();
+	    double b = weight0 * c0.getBlue() + (1-weight0) * c1.getBlue();
+	    double a = Math.max(c0.getAlpha(), c1.getAlpha());
+
+	    return new Color((int) r, (int) g, (int) b, (int) a);
+	  }
 
 	@Override
 	public void addBackground(float percentToExit) {
-		// TODO Auto-generated method stub
-		
+		final int viewWidth  = 400;
+		final int viewHeight = 400;
+		// black rectangle in upper half of screen
+		// graphics.setColor(Color.black);
+		// dynamic color setting: 
+		graphics.setColor(getBackgroundColor(percentToExit, true));
+		graphics.fillRect(0, 0, viewWidth, viewHeight/2);
+		// grey rectangle in lower half of screen
+		// graphics.setColor(Color.darkGray);
+		// dynamic color setting: 
+		graphics.setColor(getBackgroundColor(percentToExit, false));
+		graphics.fillRect(0, viewHeight/2, viewWidth, viewHeight/2);
+
 	}
 
 	@Override

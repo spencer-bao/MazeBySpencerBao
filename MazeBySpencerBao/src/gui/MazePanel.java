@@ -26,7 +26,7 @@ public class MazePanel extends Panel implements P5Panel{
 	// uses a delayed initialization and relies on client class to call initBufferImage()
 	// before first use
 	private Image bufferImage;  
-	private Graphics2D graphics; // obtained from bufferImage, 
+	private static Graphics2D graphics; // obtained from bufferImage, 
 	// graphics is stored to allow clients to draw on the same graphics object repeatedly
 	// has benefits if color settings should be remembered for subsequent drawing operations
 	
@@ -130,13 +130,13 @@ public class MazePanel extends Panel implements P5Panel{
 		graphics.setColor(color);		
 	}
 	
-	public int decodeRGB(String hex) {
+	public static int decodeRGB(String hex) {
 		return Color.decode(hex).getRGB();
 	}
 	
 	
 	
-	public int convertRGB(float r, float g, float b, float a) {
+	public static int convertRGB(float r, float g, float b, float a) {
 		return new Color(r, g, b, a).getRGB();
 
 	}
@@ -155,7 +155,7 @@ public class MazePanel extends Panel implements P5Panel{
 	}
 
 	
-	private int calculateRGBValue(final int distance, int extensionX) {
+	private static int calculateRGBValue(final int distance, int extensionX) {
         // compute rgb value, depends on distance and x direction
         // 7 in binary is 0...0111
         // use AND to get last 3 digits of distance
@@ -165,8 +165,7 @@ public class MazePanel extends Panel implements P5Panel{
         return rgbValue;
     }
 	
-	@Override
-	public int getWallColor(int distance, int cc, int extensionX) {
+	public static int getWallColorStatic(int distance, int cc, int extensionX) {
 		
 		final int RGB_DEF = 20;
 	    final int RGB_DEF_GREEN = 60;
@@ -205,6 +204,12 @@ public class MazePanel extends Panel implements P5Panel{
         }
 		return rgb;
 	}
+	
+	@Override
+	public int getWallColor(int distance, int cc, int extensionX) {
+		return getWallColorStatic(distance, cc, extensionX);
+	}
+	
 	
 	private Color getBackgroundColor(float percentToExit, boolean top) {
 		final Color greenWM = Color.decode("#115740");
@@ -292,12 +297,14 @@ public class MazePanel extends Panel implements P5Panel{
 		
 	}
 
+//	public static void setRenderingHintStatic(java.awt.RenderingHints.Key hintKey, Object hintValue) {
+//		graphics.setRenderingHint(hintKey, hintValue);
+//		
+//	}
+	
 	@Override
 	public void setRenderingHint(java.awt.RenderingHints.Key hintKey, Object hintValue) {
 		graphics.setRenderingHint(hintKey, hintValue);
-		
 	}
-	
-	
 
 }

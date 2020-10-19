@@ -131,7 +131,7 @@ public class Map {
         }
         final int viewDX = getViewDX(angle); 
         final int viewDY = getViewDY(angle);
-        drawMap(x, y, walkStep, viewDX, viewDY, showMaze, showSolution) ;
+        drawMap(panel, x, y, walkStep, viewDX, viewDY, showMaze, showSolution) ;
         drawCurrentLocation(viewDX, viewDY) ;
 	}
 	//////////////////////////////// private, internal methods //////////////////////////////
@@ -153,13 +153,13 @@ public class Map {
 	 * @param px current position, x index
 	 * @param py current position, y index 
 	 */
-	private void drawMap(int px, int py, int walkStep, 
+	private void drawMap(MazePanel panel, int px, int py, int walkStep, 
 			int viewDX, int viewDY, boolean showMaze, boolean showSolution) {
 		// dimensions of the maze in terms of cell ids
 		final int mazeWidth = maze.getWidth() ;
 		final int mazeHeight = maze.getHeight() ;
 		
-		panel.setColor(panel.decodeRGB("FFFFFF"));
+		panel.setColor(MazePanel.decodeRGB("#FFFFFF"));
 		
 		// note: 1/2 of width and height is the center of the screen
 		// the whole map is centered at the current position
@@ -190,7 +190,7 @@ public class Map {
 						maze.hasWall(x,y, CardinalDirection.North) :
 							maze.hasWall(x,y-1, CardinalDirection.South));
 
-				panel.setColor(seenWalls.hasWall(x,y, CardinalDirection.North) ? panel.decodeRGB("FFFFFF") : panel.decodeRGB("808080"));
+				panel.setColor(seenWalls.hasWall(x,y, CardinalDirection.North) ? MazePanel.decodeRGB("#FFFFFF") : MazePanel.decodeRGB("#808080"));
 				if ((seenWalls.hasWall(x,y, CardinalDirection.North) || showMaze) && theCondition)
 					panel.addLine(startX, startY, startX + mapScale, startY); // y coordinate same
 				
@@ -199,7 +199,7 @@ public class Map {
 						maze.hasWall(x,y, CardinalDirection.West) :
 							maze.hasWall((x-1),y, CardinalDirection.East));
 
-				panel.setColor(seenWalls.hasWall(x,y, CardinalDirection.West) ? panel.decodeRGB("FFFFFF") : panel.decodeRGB("808080"));
+				panel.setColor(seenWalls.hasWall(x,y, CardinalDirection.West) ? MazePanel.decodeRGB("#FFFFFF") : MazePanel.decodeRGB("#808080"));
 				if ((seenWalls.hasWall(x,y, CardinalDirection.West) || showMaze) && theCondition)
 					panel.addLine(startX, startY, startX, startY - mapScale); // x coordinate same
 			}
@@ -317,7 +317,7 @@ public class Map {
 	 * @param gc to draw on
 	 */
 	private void drawCurrentLocation(int viewDX, int viewDY) {
-		panel.setColor(panel.decodeRGB("FF0000"));
+		panel.setColor(MazePanel.decodeRGB("#FF0000"));
 		// draw oval of appropriate size at the center of the screen
 		int centerX = viewWidth/2; // center x
 		int centerY = viewHeight/2; // center y
@@ -393,7 +393,7 @@ public class Map {
 		int sy = py;
 		int distance = maze.getDistanceToExit(sx, sy);
 		
-		panel.setColor(panel.decodeRGB("FFFF00"));
+		panel.setColor(MazePanel.decodeRGB("#FFFF00"));
 		
 		// while we are more than 1 step away from the final position
 		while (distance > 1) {

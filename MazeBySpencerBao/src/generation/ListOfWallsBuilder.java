@@ -52,16 +52,16 @@ public class ListOfWallsBuilder {
 		// by flipping the condition one can run the deprecated old version
 		// instead of the new variant that uses the iterator for walls
 		// TODO: clean up code, remove unnecessary deprecated methods
-		if (false) {
-		generateWallsForHorizontalWallboards(sl); 
+//		if (false) {
+//		generateWallsForHorizontalWallboards(sl); 
+//
+//		generateWallsForVerticalWallboards(sl);
+//		}
+//		else {
+	    generateWallsForHorizontalWallboardsNew(sl); 
 
-		generateWallsForVerticalWallboards(sl);
-		}
-		else {
-		    generateWallsForHorizontalWallboardsNew(sl); 
-
-	        generateWallsForVerticalWallboardsNew(sl);
-		}
+        generateWallsForVerticalWallboardsNew(sl);
+//		}
 		// starting positions for walls seem to be chosen such that walls represent top or left wallboards
 		return sl ;
 	}

@@ -177,7 +177,7 @@ public class Wall {
 //        }
     	
     	//After P5:
-    	setColor(panel.getWallColor(distance, cc, getExtensionX()));
+    	setColor(MazePanel.getWallColorStatic(distance, cc, getExtensionX()));
     	
     }
 

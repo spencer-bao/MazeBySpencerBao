@@ -15,10 +15,10 @@ import gui.P5Panel.RenderingHints;
 //public class CompassRose extends JComponent {
 public class CompassRose {
 	
-	static MazePanel panel;
+	MazePanel panel;
 	private static final long serialVersionUID = 1916497172430988388L;
-	private final int greenWM = panel.decodeRGB("#115740");
-	private final int goldWM = panel.decodeRGB("#916f41");
+	private final int greenWM = MazePanel.decodeRGB("#115740");
+	private final int goldWM = MazePanel.decodeRGB("#916f41");
 	
 
     private final int MAIN_COLOR = greenWM; //new Color(0.4f, 0.4f, 1.0f);
@@ -26,10 +26,10 @@ public class CompassRose {
     private static final float MAIN_WIDTH = 0.15f;
     
     private static final int CIRCLE_BORDER = 2;
-    private final int CIRCLE_HIGHLIGHT = panel.convertRGB(1.0f, 1.0f, 1.0f, 0.8f); 
-    private final int CIRCLE_SHADE 	= panel.convertRGB(1.0f, 1.0f, 1.0f, 0.3f); //new Color(0.0f, 0.0f, 0.0f, 0.2f); 
+    private final int CIRCLE_HIGHLIGHT = MazePanel.convertRGB(1.0f, 1.0f, 1.0f, 0.8f); 
+    private final int CIRCLE_SHADE 	= MazePanel.convertRGB(1.0f, 1.0f, 1.0f, 0.3f); //new Color(0.0f, 0.0f, 0.0f, 0.2f); 
     
-    private final int MARKER_COLOR = panel.decodeRGB("#000000");//Color.WHITE; //Color.BLACK;
+    private final int MARKER_COLOR = MazePanel.decodeRGB("#000000");//Color.WHITE; //Color.BLACK;
     
 
     private double scaler;
@@ -48,8 +48,9 @@ public class CompassRose {
     /**
      * Construct a compass rose with the default settings.
      */
-    public CompassRose() {
+    public CompassRose(MazePanel panel) {
         this(0.9, 1.7, "Serif-PLAIN-16");
+        this.panel = panel;
     }
     
     
@@ -121,7 +122,7 @@ public class CompassRose {
 
 
 	private void drawBackground(int width) {
-		panel.setColor(16777215); // white rgb
+		panel.setColor(MazePanel.decodeRGB("#FFFFFF")); // white rgb
 		final int x = centerX - size;
 		final int y = centerY - size;
 		final int w = 2 * size;// - 2 * CIRCLE_BORDER;

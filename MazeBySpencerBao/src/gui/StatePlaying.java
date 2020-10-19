@@ -113,10 +113,10 @@ public class StatePlaying extends DefaultState {
      * for this state.
      */
 	protected void startDrawer() {
-		firstPersonView = new FirstPersonView(Constants.VIEW_WIDTH,
+		firstPersonView = new FirstPersonView(panel, Constants.VIEW_WIDTH,
 				Constants.VIEW_HEIGHT, Constants.MAP_UNIT,
 				Constants.STEP_SIZE, seenCells, mazeConfig.getRootnode()) ;
-		mapView = new Map(seenCells, 15, mazeConfig) ;
+		mapView = new Map(panel, seenCells, 15, mazeConfig) ;
 		// draw the initial screen for this state
 		draw();
 	}
@@ -227,9 +227,9 @@ public class StatePlaying extends DefaultState {
     		return;
     	}
     	// draw the first person view and the map view if wanted
-    	firstPersonView.draw(panel, px, py, walkStep, angle, getPercentageForDistanceToExit()) ;
+    	firstPersonView.draw(px, py, walkStep, angle, getPercentageForDistanceToExit()) ;
         if (isInMapMode()) {
-			mapView.draw(panel, px, py, angle, walkStep,
+			mapView.draw(px, py, angle, walkStep,
 					isInShowMazeMode(),isInShowSolutionMode()) ;
 		}
 		// update the screen with the buffer graphics
@@ -408,7 +408,7 @@ public class StatePlaying extends DefaultState {
     	// for guidance
     	if (isFacingDeadEnd()) {
         	//System.out.println("Facing deadend, help by showing solution");
-        	mapView.draw(panel, px, py, angle, walkStep, true, true) ;
+        	mapView.draw(px, py, angle, walkStep, true, true) ;
         }
     	else {
     		// draw compass rose

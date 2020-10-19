@@ -23,7 +23,7 @@ import generation.Wall;
  * Refactored by Peter Kemper
  */
 public class FirstPersonView {
-	static MazePanel panel;
+	MazePanel panel;
 	// Constants
 	final int viewZ = 50;  // constant from StatePlaying.java
 	// Instance variables set once and for all in constructor call
@@ -38,9 +38,9 @@ public class FirstPersonView {
 	final private int stepSize;   // = map_unit/4;
 	// map scale may be adjusted by user input, controlled in StatePlaying
 	// colors for background
-	static final int greenWM = panel.decodeRGB("#115740");
-	static final int goldWM = panel.decodeRGB("#916f41");
-	static final int yellowWM = panel.decodeRGB("#FFFF99");
+	static final int greenWM 	= MazePanel.decodeRGB("#115740");
+	static final int goldWM 	= MazePanel.decodeRGB("#916f41");
+	static final int yellowWM 	= MazePanel.decodeRGB("#FFFF99");
 	
 	/**
 	 * A data structure to store which wallboards have been visible during
@@ -130,8 +130,9 @@ public class FirstPersonView {
 	 * @param seenWalls to store which walls were put on display
 	 * @param bspRoot
 	 */
-	public FirstPersonView(int width, int height, int mapUnit, int stepSize, Floorplan seenWalls, BSPNode bspRoot) {
+	public FirstPersonView(MazePanel panel, int width, int height, int mapUnit, int stepSize, Floorplan seenWalls, BSPNode bspRoot) {
 		// store given parameter values
+		this.panel = panel;
 		viewWidth = width;
 		viewHeight = height;
 		this.mapUnit = mapUnit;
@@ -154,7 +155,7 @@ public class FirstPersonView {
 	 * @param walkStep, only used to set viewX and viewY
 	 * 
 	 */
-	public void draw(MazePanel panel, int x, int y, int walkStep, int ang, float percentToExit) {
+	public void draw(int x, int y, int walkStep, int ang, float percentToExit) {
 		// obtain a Graphics2D object we can draw on
 //		Graphics g = panel.getBufferGraphics() ;
         // viewers draw on the buffer graphics
@@ -172,7 +173,7 @@ public class FirstPersonView {
         // draw background figure: black on bottom half, grey on top half
         drawBackground(percentToExit);
         // set color to white and draw what ever can be seen from the current position
-        panel.setColor(panel.decodeRGB("FFFFFF"));
+        panel.setColor(MazePanel.decodeRGB("#FFFFFF"));
         // reset the set of ranges to a single new element (0,width-1)
         // to cover the full width of the view 
         // as we have not drawn any polygons (walls) yet.

@@ -70,8 +70,9 @@ public class Map {
 	 * @param mapScale
 	 * @param maze
 	 */
-	public Map(int width, int height, int mapUnit, int stepSize, Floorplan seenWalls, int mapScale, Maze maze){
+	public Map(MazePanel panel, int width, int height, int mapUnit, int stepSize, Floorplan seenWalls, int mapScale, Maze maze){
 		//System.out.println("MapDrawer: constructor called") ;
+		this.panel = panel;
 		viewWidth = width ;
 		viewHeight = height ;
 		this.mapUnit = mapUnit ;
@@ -91,8 +92,8 @@ public class Map {
 	 * @param mapScale
 	 * @param maze
 	 */
-	public Map(Floorplan seenCells, int mapScale, Maze maze){
-		this(Constants.VIEW_WIDTH,Constants.VIEW_HEIGHT,Constants.MAP_UNIT,
+	public Map(MazePanel panel, Floorplan seenCells, int mapScale, Maze maze){
+		this(panel, Constants.VIEW_WIDTH,Constants.VIEW_HEIGHT,Constants.MAP_UNIT,
     			Constants.STEP_SIZE, seenCells, mapScale, maze);
 		}
 	
@@ -121,7 +122,7 @@ public class Map {
 	 * @param showSolution if true shows a path to the exit as a yellow line,
 	 * otherwise path is not shown.
 	 */
-	public void draw(MazePanel panel, int x, int y, int angle, int walkStep,
+	public void draw(int x, int y, int angle, int walkStep,
 			boolean showMaze, boolean showSolution) {
 //		Graphics g = panel.getBufferGraphics() ;
         // viewers draw on the buffer graphics
@@ -131,7 +132,7 @@ public class Map {
         }
         final int viewDX = getViewDX(angle); 
         final int viewDY = getViewDY(angle);
-        drawMap(panel, x, y, walkStep, viewDX, viewDY, showMaze, showSolution) ;
+        drawMap(x, y, walkStep, viewDX, viewDY, showMaze, showSolution) ;
         drawCurrentLocation(viewDX, viewDY) ;
 	}
 	//////////////////////////////// private, internal methods //////////////////////////////
@@ -153,7 +154,7 @@ public class Map {
 	 * @param px current position, x index
 	 * @param py current position, y index 
 	 */
-	private void drawMap(MazePanel panel, int px, int py, int walkStep, 
+	private void drawMap(int px, int py, int walkStep, 
 			int viewDX, int viewDY, boolean showMaze, boolean showSolution) {
 		// dimensions of the maze in terms of cell ids
 		final int mazeWidth = maze.getWidth() ;
